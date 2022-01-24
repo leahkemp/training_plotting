@@ -1,0 +1,562 @@
+---
+title: "Training data analysis"
+author: "Leah Kemp"
+date: "Date: `r base::format(Sys.time(), '%d/%m/%Y')`"
+always_allow_html: true
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: false
+    self_contained: yes
+  editor_options: 
+    chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.align = "center")
+```
+
+```{r}
+# load packages
+library(googlesheets4)
+library(tidyverse)
+library(janitor)
+library(DT)
+library(scales)
+```
+
+```{r}
+# links to excel spreadsheets in google docs
+training_plan_july_2021_july_2022 <- "https://docs.google.com/spreadsheets/d/1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0/edit#gid=35820724"
+training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
+
+# read in data from google sheets
+M3_DAILY_FLEX_EXTRA <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M3_DAILY_FLEX_EXTRA") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+M3_POLE_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M3_POLE_FULL_BODY") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+M3_LEG_DAY_EXTRA <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M3_LEG_DAY_EXTRA") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+M2_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M2_FULL_BODY") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+M2_CORE_FLEX <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M2_CORE_FLEX") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+M1_POLE <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M1_POLE") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+M1_GYM <- read_sheet(training_plan_july_2021_july_2022,
+                                sheet = "M1_GYM") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+targeting_the_requirments <- read_sheet(training_plan_feb_august_2021,
+                                        sheet = "targeting_the_requirements") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+targeting_the_tricks <- read_sheet(training_plan_feb_august_2021,
+                                        sheet = "targeting_the_tricks") %>%
+  # remove empty rows
+  janitor::remove_empty()
+
+# bind data from separate sheets together
+data_M3 <- full_join(M3_DAILY_FLEX_EXTRA,
+                     M3_POLE_FULL_BODY,
+                     M3_LEG_DAY_EXTRA,
+                     by = c("requirement", "exercise"))
+
+data_M2 <- full_join(M2_FULL_BODY,
+                     M2_CORE_FLEX,
+                     by = c("requirement", "exercise"))
+
+data_M1 <- full_join(M1_POLE,
+                     M1_GYM,
+                     by = c("requirement", "exercise"))
+
+data_newer_plan <- full_join(data_M3,
+                             data_M2,
+                             data_M1,
+                             by = c("requirement", "exercise"))
+
+data_older_plan <- full_join(M1_POLE,
+                             targeting_the_tricks,
+                             by = c("requirement", "exercise"))
+
+# join all data together
+data <- full_join(data_newer_plan,
+                  data_older_plan,
+                  by = c("requirement", "exercise"))
+
+# recode empty strings "" by NAs
+data <- data %>%
+  na_if("") 
+
+# format all columns that have a date in their name, to integer format
+data <- data %>%
+  mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,2}.set")), as.integer)
+
+##### weight data #####
+
+# remove some columns to only get the weights data
+# this'll also remove columns that don't have a date in the name (data hasn't been entered in those columns)
+data_weight <- data %>%
+  dplyr::select(requirement,
+                exercise,
+                matches("\\d{1,2}/\\d{1,2}/\\d{1,2}"))
+
+# remove some columns to only get the sets and reps
+data_weight <- data_weight %>%
+  select(!contains(c("notes", "reps_or_sec")))
+
+# make this data long for downstream analyses
+# this also extracts the date from the column names and makes a variable out of it
+data_weight_long <- pivot_longer(data_weight,
+                       cols = -c(requirement, exercise),
+                       names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,2}).(....).(weight)$",
+                       names_to = c("date", "set", "weight")) %>% 
+  mutate(date=ifelse(date=="", "value", date))
+
+# clean up columns
+data_weight_long <- data_weight_long %>%
+  select(-weight) %>%
+  rename(weight = value)
+
+# remove rows with NA values (exercise not done)
+data_weight_long <- data_weight_long %>%
+  na.omit()
+
+# format date column as a date
+data_weight_long$date <- as.Date(data_weight_long$date,"%d/%m/%y")
+
+##### reps data #####
+
+# remove some columns to only get the sets and reps
+# this'll also remove columns that don't have a date in the name (data hasn't been entered in those columns)
+data_reps_or_secs <- data %>%
+  dplyr::select(requirement,
+                exercise,
+                matches("\\d{1,2}/\\d{1,2}/\\d{1,2}"))
+
+# remove some columns to only get the sets and reps
+data_reps_or_secs <- data_reps_or_secs %>%
+  select(!contains(c("notes", "weight")))
+
+# make this data long for downstream analyses
+# this also extracts the date from the column names and makes a variable out of it
+data_reps_or_secs_long <- pivot_longer(data_reps_or_secs,
+                       cols = -c(requirement, exercise),
+                       names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,2}).(....).(reps_or_secs)$",
+                       names_to = c("date", "set", "reps_or_secs")) %>% 
+  mutate(date=ifelse(date=="", "value", date))
+
+# clean up columns
+data_reps_or_secs_long <- data_reps_or_secs_long %>%
+  select(-reps_or_secs) %>%
+  rename(reps_or_secs = value)
+
+# remove rows with NA values (exercise not done)
+data_reps_or_secs_long <- data_reps_or_secs_long %>%
+  na.omit()
+
+# format date column as a date
+data_reps_or_secs_long$date <- as.Date(data_reps_or_secs_long$date,"%d/%m/%y")
+
+##### merge reps and weight data #####
+
+data_long <- full_join(data_weight_long,
+                       data_reps_or_secs_long,
+                       by = c("requirement", "exercise", "date", "set"))
+
+# replace missing values for weight (where I didn't enter a value since no weight was used) with 0
+data_long <- replace(data_long, is.na(data_long), 0)
+
+# setup plotting function
+time_series_plot <- function(data, wrap_variable) {
+  data %>%
+    ggplot(aes(x = date, y = number_of_sets_completed)) +
+    geom_bar(stat="identity") +
+    theme(legend.position = "none") +
+    facet_wrap(vars(exercise)) +
+    labs(title = "",
+         x = "Date",
+         y = "Number of sets") +
+    theme_bw() +
+    theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                     hjust = 0.5, vjust = 0.5),
+          axis.text.y = element_text(colour = "grey20", size = 8),
+          legend.title = element_blank(),
+          text = element_text(size = 8)) +
+    scale_x_date(labels = date_format("%Y-%m-%d"),
+                 breaks = "1 month", date_labels = "%m %Y")
+}
+
+time_series_summary_broad_plot <- function(data) {
+  data %>%
+    ggplot(aes(x = date, y = number_of_sets_completed)) +
+    geom_bar(stat="identity") +
+    theme(legend.position = "none") +
+    facet_wrap(vars(requirement_broad)) +
+    labs(title = "",
+         x = "Date",
+         y = "Number of sets") +
+    theme_bw() +
+    theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                     hjust = 0.5, vjust = 0.5),
+          axis.text.y = element_text(colour = "grey20", size = 8),
+          legend.title = element_blank(),
+          text = element_text(size = 8)) +
+    scale_x_date(labels = date_format("%Y-%m-%d"),
+                 breaks = "1 month", date_labels = "%m %Y")
+}
+
+time_series_summary_plot <- function(data) {
+  data %>%
+    ggplot(aes(x = date, y = number_of_sets_completed)) +
+    geom_bar(stat="identity") +
+    theme(legend.position = "none") +
+    facet_wrap(vars(requirement)) +
+    labs(title = "",
+         x = "Date",
+         y = "Number of sets") +
+    theme_bw() +
+    theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                     hjust = 0.5, vjust = 0.5),
+          axis.text.y = element_text(colour = "grey20", size = 8),
+          legend.title = element_blank(),
+          text = element_text(size = 8)) +
+    scale_x_date(labels = date_format("%Y-%m-%d"),
+                 breaks = "1 month", date_labels = "%m %Y")
+}
+
+# generalise the requirement list
+upper_body_strength <- c("Cup grip handspring deadlift",
+                         "Internal and external shoulder rotation",
+                         "No leg climb",
+                         "Pushing strength",
+                         "Shoulder flexion (with external rotation)",
+                         "Shoulder flexion (with neutral)",
+                         "Shoulder mount deadlift",
+                         "True grip ayesha",
+                         "Twisted grip handspring deadlift",
+                         "Upper body power",
+                         "Upper body strength")
+
+lower_body_strength <- c("Lower body power",
+                         "Lower body strength")
+
+core_strength <- c("Anti-extension core strength",
+                   "Anti-lateral core strength",
+                   "Anti-rotation core strength")
+
+back_bending_rotation_flexibility <- c("Back flexibility",
+                              "Thoracic rotation",
+                              "Upper back/shoulder flexibility")
+
+splits_flexibility <- c("Active hamstring flexibility",
+                        "Active hamstring flexibility/hip flexion strength",
+                        "Active hip adduction and abduction",
+                        "Front splits",
+                        "Hamstring nerve tension",
+                        "Hip extension flexibility",
+                        "Internal and external hip rotation",
+                        "Middle split",
+                        "Pancake split")
+
+
+data_long <- data_long %>%
+  mutate(requirement_broad = case_when(requirement %in% upper_body_strength ~ "Upper body strength",
+                                       exercise == "Pole invert starting position isometric hold" ~ "Upper body strength",
+                                       exercise == "Pole invert finishing position isometric hold" ~ "Upper body strength",
+                                       requirement %in% lower_body_strength ~ "Lower body strength",
+                                       requirement %in% core_strength ~ "Core strength",
+                                       exercise == "Pole invert knee tucks" ~ "Core strength",
+                                       requirement %in% back_bending_rotation_flexibility  ~ "Back bending and rotation flexibility",
+                                       requirement %in% splits_flexibility ~ "Splits flexibility"))
+```
+
+## Excercise list
+
+```{r}
+# create table of list of exercises
+data_long %>%
+  select(exercise,
+         requirement_broad) %>%
+  unique() %>%
+  # order alphabetically by requirement
+  arrange(exercise) %>%
+  DT::datatable(filter = "top",
+                colnames = c("Exercise",
+                             "Requirement - broad"),
+                rownames = FALSE,
+                extensions = list("ColReorder" = NULL,
+                                  "Buttons" = NULL,
+                                  "FixedColumns" = list(leftColumns=1)),
+                options = list(
+                  dom = "BRrltpi",
+                  autoWidth = TRUE,
+                  buttons =
+                    list("copy",
+                         list(extend = "collection",
+                              buttons = c("csv", "excel", "pdf"),
+                              text = "Download"),
+                         I("colvis"))))
+```
+
+## PR
+
+```{r}
+# make table of max weight for each exercise
+data_long %>%
+  select(-c(set, requirement, requirement_broad)) %>%
+  group_by(exercise) %>%
+  slice(which.max(weight)) %>%
+  DT::datatable(filter = "top",
+                colnames = c("Exercise",
+                             "Date",
+                             "Max weight",
+                             "Reps/secs"),
+                rownames = FALSE,
+                extensions = list("ColReorder" = NULL,
+                                  "Buttons" = NULL,
+                                  "FixedColumns" = list(leftColumns=1)),
+                options = list(
+                  dom = "BRrltpi",
+                  autoWidth = TRUE,
+                  buttons =
+                    list("copy",
+                         list(extend = "collection",
+                              buttons = c("csv", "excel", "pdf"),
+                              text = "Download"),
+                         I("colvis"))))
+```
+
+## Number of sets completed over time {.tabset .tabset-fade}
+
+*Note. no lower body/upper body and core strength data available from personal training sessions between Dec 2020 to Dec 2021*
+
+### Broad requirement groups
+
+```{r}
+# summarise data by date and exercise
+time_series_data <- data_long %>%
+  group_by(requirement_broad, exercise, date) %>%
+  summarise(number_of_sets_completed = n())
+```
+
+#### All categories
+
+```{r}
+time_series_data %>%
+  time_series_summary_broad_plot()
+```
+
+#### Core strength
+
+```{r}
+time_series_data %>%
+  filter(requirement_broad == "Core strength") %>%
+  time_series_plot()
+```
+
+#### Lower body strength
+
+```{r}
+time_series_data %>%
+  filter(requirement_broad == "Lower body strength") %>%
+  time_series_plot()
+```
+
+#### Upper body strength
+
+```{r}
+time_series_data %>%
+  filter(requirement_broad == "Upper body strength") %>%
+  time_series_plot()
+```
+
+#### Splits flexibility
+
+```{r}
+time_series_data %>%
+  filter(requirement_broad == "Splits flexibility") %>%
+  time_series_plot()
+```
+
+#### Back bending and rotation flexibility
+
+```{r}
+time_series_data %>%
+  filter(requirement_broad == "Back bending and rotation flexibility") %>%
+  time_series_plot()
+```
+
+### Smaller requirement groups
+
+*Note. no lower body/upper body and core strength data available from personal training sessions between Dec 2020 to Dec 2021*
+
+#### All categories
+
+```{r}
+# summarise data by date and exercise
+time_series_data <- data_long %>%
+  group_by(requirement, exercise, date) %>%
+  summarise(number_of_sets_completed = n())
+```
+
+```{r}
+time_series_data %>%
+  time_series_summary_plot()
+```
+
+#### Thoracic rotation
+
+```{r}
+time_series_data %>%
+  filter(requirement == "Thoracic rotation") %>%
+  time_series_plot()
+```
+
+#### Anti-extension core strength
+
+```{r}
+time_series_data %>%
+  filter(requirement == "Anti-extension core strength") %>%
+  time_series_plot()
+```
+
+#### Anti-lateral core strength
+
+```{r}
+time_series_data %>%
+  filter(requirement == "Anti-lateral core strength") %>%
+  time_series_plot()
+```
+
+## Stretching
+
+### Weekly total time stretching
+
+**Target: 5-10 minutes per week per muscle**
+
+```{r}
+# recode empty strings "" by NAs
+M3_DAILY_FLEX_EXTRA <- M3_DAILY_FLEX_EXTRA %>%
+  na_if("") 
+
+# format all columns that have a date in their name, to integer format
+M3_DAILY_FLEX_EXTRA <- M3_DAILY_FLEX_EXTRA %>%
+  mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,2}.set")), as.integer)
+
+# remove some columns to only get the sets and reps
+# this'll also remove columns that don't have a date in the name (data hasn't been entered in those columns)
+M3_DAILY_FLEX_EXTRA <- M3_DAILY_FLEX_EXTRA %>%
+  dplyr::select(requirement,
+                exercise,
+                matches("\\d{1,2}/\\d{1,2}/\\d{1,2}"))
+
+# make this data long for downstream analyses
+# this also extracts the date from the column names and makes a variable out of it
+M3_DAILY_FLEX_EXTRA_long <- pivot_longer(M3_DAILY_FLEX_EXTRA,
+                       cols = -c(requirement, exercise),
+                       names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,2}).(....).(reps_or_secs)$",
+                       names_to = c("date", "set", "reps_or_secs")) %>% 
+  mutate(date=ifelse(date=="", "value", date))
+
+# clean up columns
+M3_DAILY_FLEX_EXTRA_long <- M3_DAILY_FLEX_EXTRA_long %>%
+  select(-reps_or_secs) %>%
+  rename(reps_or_secs = value)
+
+# remove rows with NA values (exercise not done)
+M3_DAILY_FLEX_EXTRA_long <- M3_DAILY_FLEX_EXTRA_long %>%
+  na.omit()
+
+# format date column as a date
+M3_DAILY_FLEX_EXTRA_long$date <- as.Date(M3_DAILY_FLEX_EXTRA_long$date,"%d/%m/%y")
+```
+
+```{r}
+# summarise data by week and exercise
+time_series_data <- M3_DAILY_FLEX_EXTRA_long %>%
+  group_by(requirement, exercise, date) %>%
+  summarise(number_of_reps_or_secs_completed = sum(reps_or_secs))
+```
+
+```{r}
+time_series_data %>%
+  ggplot(aes(x = date, y = number_of_reps_or_secs_completed)) +
+  geom_bar(stat="identity") +
+  theme(legend.position = "none") +
+  facet_wrap(vars(requirement)) +
+  labs(title = "",
+       x = "Week",
+       y = "Total seconds") +
+  theme_bw() +
+  theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                   hjust = 0.5, vjust = 0.5),
+        axis.text.y = element_text(colour = "grey20", size = 8),
+        legend.title = element_blank(),
+        text = element_text(size = 8)) +
+  geom_hline(yintercept = 300, colour = "orange") +
+  geom_hline(yintercept = 600, colour = "forest green") +
+    scale_x_date(labels = date_format("%Y-%m-%d"),
+                 breaks = "1 week")
+```
+
+### Stretching frequency
+
+**Target: 5-6 days week per week**
+
+```{r}
+# summarise data by week and exercise
+time_series_data <- M3_DAILY_FLEX_EXTRA_long %>%
+  group_by(requirement, exercise, date) %>%
+  summarise(number_of_sessions_completed = length(unique(date)))
+```
+
+```{r}
+time_series_data %>%
+  ggplot(aes(x = date, y = number_of_sessions_completed)) +
+  geom_bar(stat="identity") +
+  theme(legend.position = "none") +
+  facet_wrap(vars(requirement)) +
+  labs(title = "",
+       x = "Week",
+       y = "Total number of sessions") +
+  theme_bw() +
+  theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                   hjust = 0.5, vjust = 0.5),
+        axis.text.y = element_text(colour = "grey20", size = 8),
+        legend.title = element_blank(),
+        text = element_text(size = 8)) +
+  geom_hline(yintercept = 5, colour = "orange") +
+  geom_hline(yintercept = 6, colour = "forest green") +
+    scale_x_date(labels = date_format("%Y-%m-%d"),
+                 breaks = "1 week")
+```
+
+```{r, cleanup, results = "hide"}
+# clean up
+rm(list = ls())
+```
