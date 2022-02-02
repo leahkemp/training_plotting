@@ -27,6 +27,8 @@ library(tidyverse)
 library(janitor)
 library(DT)
 library(scales)
+library(lubridate)
+library(plotly)
 ```
 
 ```{r}
@@ -379,20 +381,70 @@ data %>%
 *Note. no lower body/upper body and core strength data available from personal training sessions between Dec 2020 to Dec 2021*
 
 ```{r}
-# summarise data by date and exercise
+# summarise data by broad requirement and date
 time_series_data <- data %>%
-  group_by(requirement_broad, exercise, date) %>%
+  group_by(requirement_broad, date) %>%
   summarise(number_of_sets_completed = n())
 ```
 
 ### All categories
 
-```{r, fig.height = 10, out.width = "100%"}
-time_series_data %>%
-  time_series_summary_broad_plot()
+```{r, out.width = "100%"}
+# split data by broad requirement
+time_series_data <- time_series_data %>% split(time_series_data$requirement_broad)
+
+# plot
+plot_ly(type = "scatter",
+        mode = "lines",
+        texttemplate="%{label}") %>%
+  add_trace(data = time_series_data$`Back bending and rotation flexibility`,
+            x = ~date,
+            y = ~number_of_sets_completed,
+            name = "Back bending and rotation flexibility") %>%
+  add_trace(data = time_series_data$`Core strength`,
+            x = ~date,
+            y = ~number_of_sets_completed,
+            name = "Core strength") %>%
+  add_trace(data = time_series_data$`Lower body strength`,
+            x = ~date,
+            y = ~number_of_sets_completed,
+            name = "Lower body strength") %>%
+  add_trace(data = time_series_data$`Splits flexibility`,
+            x = ~date,
+            y = ~number_of_sets_completed,
+            name = "Splits flexibility") %>%
+  add_trace(data = time_series_data$`Upper body strength`,
+            x = ~date,
+            y = ~number_of_sets_completed,
+            name = "Upper body strength") %>%
+  layout(showlegend = TRUE,
+         xaxis = list(rangeslider = list(visible = TRUE),
+                      rangeselector = list(
+                        buttons = list(
+                          list(count=1, label="1m", step="month", stepmode="backward"),
+                          list(count=6, label="6m", step="month", stepmode="backward"),
+                          list(count=1, label="YTD", step="year", stepmode="todate"),
+                          list(count=1, label="1y", step="year", stepmode="backward"),
+                          list(step="all"))))) %>%
+  layout(xaxis = list(title = "Date",
+                      zerolinecolor = "#ffff",
+                      zerolinewidth = 2,
+                      gridcolor = "ffff"),
+         yaxis = list(title = "Number of sets completed",
+                      zerolinecolor = "#ffff",
+                      zerolinewidth = 2,
+                      gridcolor = "ffff"),
+         plot_bgcolor="#e5ecf6", width = 900)
 ```
 
 ### Core strength
+
+```{r}
+# summarise data by broad requirement, exercise and date
+time_series_data <- data %>%
+  group_by(requirement_broad, exercise, date) %>%
+  summarise(number_of_sets_completed = n())
+```
 
 ```{r, fig.height = 35, out.width = "100%"}
 time_series_data %>%
@@ -473,18 +525,33 @@ M3_DAILY_FLEX_EXTRA_long <- M3_DAILY_FLEX_EXTRA_long %>%
 
 # format date column as a date
 M3_DAILY_FLEX_EXTRA_long$date <- as.Date(M3_DAILY_FLEX_EXTRA_long$date,"%d/%m/%y")
+
+# create a column that specifies the week
+M3_DAILY_FLEX_EXTRA_long <- M3_DAILY_FLEX_EXTRA_long %>%
+  dplyr::mutate(week = lubridate::week(lubridate::ymd(M3_DAILY_FLEX_EXTRA_long$date)))
 ```
 
 ```{r}
 # summarise data by week and exercise
 time_series_data <- M3_DAILY_FLEX_EXTRA_long %>%
-  group_by(requirement, exercise, date) %>%
+  group_by(requirement, exercise, week) %>%
   summarise(number_of_reps_or_secs_completed = sum(reps_or_secs))
 ```
 
 ```{r, out.width = "100%"}
+# a function for getting integer y-axis values
+# (grabbed code from: https://joshuacook.netlify.app/post/integer-values-ggplot-axis/)
+integer_breaks <- function(n = 5, ...) {
+  fxn <- function(x) {
+    breaks <- floor(pretty(x, n, ...))
+    names(breaks) <- attr(breaks, "labels")
+    breaks
+  }
+  return(fxn)
+}
+
 time_series_data %>%
-  ggplot(aes(x = date, y = number_of_reps_or_secs_completed)) +
+  ggplot(aes(x = week, y = number_of_reps_or_secs_completed)) +
   geom_bar(stat="identity") +
   theme(legend.position = "none") +
   facet_wrap(vars(requirement)) +
@@ -499,8 +566,7 @@ time_series_data %>%
         text = element_text(size = 8)) +
   geom_hline(yintercept = 300, colour = "orange") +
   geom_hline(yintercept = 600, colour = "forest green") +
-    scale_x_date(labels = date_format("%Y-%m-%d"),
-                 breaks = "1 week")
+  scale_x_continuous(breaks = integer_breaks())
 ```
 
 ### Stretching frequency
@@ -510,13 +576,13 @@ time_series_data %>%
 ```{r}
 # summarise data by week and exercise
 time_series_data <- M3_DAILY_FLEX_EXTRA_long %>%
-  group_by(requirement, exercise, date) %>%
+  group_by(requirement, week) %>%
   summarise(number_of_sessions_completed = length(unique(date)))
 ```
 
 ```{r, out.width = "100%"}
 time_series_data %>%
-  ggplot(aes(x = date, y = number_of_sessions_completed)) +
+  ggplot(aes(x = week, y = number_of_sessions_completed)) +
   geom_bar(stat="identity") +
   theme(legend.position = "none") +
   facet_wrap(vars(requirement)) +
@@ -531,8 +597,7 @@ time_series_data %>%
         text = element_text(size = 8)) +
   geom_hline(yintercept = 5, colour = "orange") +
   geom_hline(yintercept = 6, colour = "forest green") +
-    scale_x_date(labels = date_format("%Y-%m-%d"),
-                 breaks = "1 week")
+  scale_x_continuous(breaks = integer_breaks())
 ```
 
 ```{r, cleanup, results = "hide"}
