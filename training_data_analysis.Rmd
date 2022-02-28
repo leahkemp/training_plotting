@@ -29,6 +29,7 @@ library(DT)
 library(scales)
 library(lubridate)
 library(plotly)
+library(shiny)
 ```
 
 ```{r}
@@ -38,13 +39,13 @@ training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONry
 
 # read in data from google sheets
 M3_DAILY_FLEX_EXTRA <- read_sheet(training_plan_july_2021_july_2022,
-                                  sheet = "M3_DAILY_FLEX_EXTRA")
+                                  sheet = "M3_DAILY_FLEX")
 
 M3_POLE_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
-                                sheet = "M3_POLE_FULL_BODY")
+                                sheet = "M3_POLE_UPPER_BODY_CORE")
 
 M3_LEG_DAY_EXTRA <- read_sheet(training_plan_july_2021_july_2022,
-                               sheet = "M3_LEG_DAY_EXTRA")
+                               sheet = "M3_LOWER_BODY")
 
 M2_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
                            sheet = "M2_FULL_BODY")
@@ -395,7 +396,7 @@ time_series_data <- time_series_data %>% split(time_series_data$requirement_broa
 
 # plot
 plot_ly(type = "scatter",
-        mode = "lines",
+        mode = "markers + lines",
         texttemplate="%{label}") %>%
   add_trace(data = time_series_data$`Back bending and rotation flexibility`,
             x = ~date,
@@ -422,6 +423,7 @@ plot_ly(type = "scatter",
                       rangeselector = list(
                         buttons = list(
                           list(count=1, label="1m", step="month", stepmode="backward"),
+                          list(count=3, label="3m", step="month", stepmode="backward"),
                           list(count=6, label="6m", step="month", stepmode="backward"),
                           list(count=1, label="YTD", step="year", stepmode="todate"),
                           list(count=1, label="1y", step="year", stepmode="backward"),
@@ -482,6 +484,74 @@ time_series_data %>%
 time_series_data %>%
   filter(requirement_broad == "Back bending and rotation flexibility") %>%
   time_series_plot()
+```
+
+## Weight - time series
+
+```{r, eval = FALSE}
+# get all the exercises
+exercises <- unique(data$exercise)
+
+### COLOURING OF POINTS NOT WORKING ###
+
+# pair each exercise with a colour so they are consistent between all the plots
+colours_list <- data.frame(colour = paste0(rainbow(n = length(exercises))),
+                           exercise = exercises)
+
+colours_list$colour = paste0('"', colours_list$colour, '"')
+
+# join my column column back into data
+data <- left_join(data, colours_list, by = "exercise")
+
+# setup ui
+ui <- fluidPage(
+  
+  # generate box for user to select exercise
+  selectizeInput(
+    inputId = "exercises", 
+    label = NULL,
+    choices = c("Choose an exercise" = "", exercises), 
+    multiple = TRUE
+  ),
+  
+  # render plot
+  plotlyOutput(outputId = "scatterplot")
+)
+
+# setup server
+server <- function(input, output, session, ...) {
+  
+  # render scatterplot based on current user exercise choice
+  output$scatterplot <- renderPlotly({
+    
+    req(input$exercises)
+    
+    # get current screen width of
+    cur_height <- session$clientData$output_p_height
+    cur_width <- session$clientData$output_p_width
+    
+    # plot
+    scatterplot <- plot_ly(data = filter(data, exercise %in% input$exercises),
+                           x = ~date,
+                           y = ~weight,
+                           type = "scatter",
+                           mode = "markers",
+                           hoverinfo = "text",
+                           text = ~ base::paste("</br><i>", exercise, "</i>",
+                                                "</br><br> Weight:", weight,
+                                                "</br> Reps/secs:", reps_or_secs,
+                                                "</br> Date:", date),
+                           marker = base::list(colors = ~colour),
+                           size = ~reps_or_secs) %>%
+      plotly::layout(width = cur_width,
+                     height = cur_height,
+                     xaxis = base::list(title = "Date"),
+                     yaxis = base::list(title = "Weight (kg)"))
+    
+  })
+}
+
+shinyApp(ui, server)
 ```
 
 ## Stretching
