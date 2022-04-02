@@ -223,7 +223,7 @@ splits_flexibility <- c("Active hamstring flexibility",
                         "Internal and external hip rotation",
                         "Middle split",
                         "Pancake split",
-                        "Point drills",
+                        "Foot point",
                         "Microbend drills",
                         "Hip flexor flexibility",
                         "Hamstring flexibility",
@@ -327,8 +327,8 @@ time_series_summary_plot <- function(data) {
 # get the combinations of weights and reps/sec for each exercise
 weight_reps_pairs <- data %>%
   select(-c(set, requirement, requirement_broad)) %>%
-  group_by(exercise, weight, reps_or_secs) %>%
-  summarise(weight, reps_or_secs)
+  group_by(exercise,reps_or_secs, weight) %>%
+  summarise(reps_or_secs, weight)
 
 # split dataset by exercise
 weight_reps_pairs_by_exercise <- split(weight_reps_pairs, weight_reps_pairs$exercise)
@@ -337,7 +337,7 @@ get_pr <- function(data_list) {
   
   # order data by highest weight and highest number of reps/secs (priority to highest weight)
   ordered <- data_list %>%
-    arrange(desc(weight), desc(reps_or_secs))
+    arrange(desc(reps_or_secs), desc(weight))
   
   # get the top row
   pr <- ordered[1, ]
@@ -356,8 +356,8 @@ pr <- Reduce(rbind, pr)
 pr %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
-                             "Max weight",
-                             "Reps/secs"),
+                             "Reps/secs",
+                             "Max weight"),
                 rownames = FALSE,
                 extensions = list("ColReorder" = NULL,
                                   "Buttons" = NULL,
