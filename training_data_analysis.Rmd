@@ -337,7 +337,7 @@ get_pr <- function(data_list) {
   
   # order data by highest weight and highest number of reps/secs (priority to highest weight)
   ordered <- data_list %>%
-    arrange(desc(reps_or_secs), desc(weight))
+    arrange(desc(weight), desc(reps_or_secs))
   
   # get the top row
   pr <- ordered[1, ]
@@ -354,6 +354,7 @@ pr <- Reduce(rbind, pr)
 
 # put in table
 pr %>%
+  dplyr::select(exercise, reps_or_secs, weight) %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
                              "Reps/secs",
