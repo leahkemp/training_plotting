@@ -106,7 +106,7 @@ prepare_weights_data <- function(df_list) {
     select(!contains(c("notes", "reps_or_secs"))) %>%
     
     # format all columns that have a date in their name, to integer format
-    mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), as.integer) %>%
+    mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), as.double) %>%
     
     # make this data long for downstream analyses
     # this also extracts the date from the column names and makes a variable out of it
