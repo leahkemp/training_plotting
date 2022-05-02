@@ -38,6 +38,9 @@ training_plan_july_2021_july_2022 <- "https://docs.google.com/spreadsheets/d/1jS
 training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
 
 # read in data from google sheets
+# M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
+#                                    sheet = "M4_POLE_CONDITIONING")
+
 M4_DAILY_FLEX <- read_sheet(training_plan_july_2021_july_2022,
                             sheet = "M4_DAILY_FLEX")
 
