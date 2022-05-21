@@ -22,17 +22,19 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+        
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      
+      - name: Checkout
+        uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
       - name: Render document
         uses: lc5415/rmarkdown-action@v1
         with:
           input_file: training_data_analysis.Rmd
-	        output_format: html_document
-        
-        
+          output_format: html_document
+          
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         with:
