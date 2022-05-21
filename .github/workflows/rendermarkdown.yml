@@ -28,12 +28,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Render document
-        uses: lc5415/rmarkdown-action@v1
-        with:
-          input_file: training_data_analysis.Rmd
-          output_format: html_document
+
+      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-pandoc@v1
+      - uses: r-lib/actions/setup-tinytex@v1
+      - name: Install rmarkdown
+        run: Rscript -e 'install.packages("rmarkdown")'
+      - name: Render my document to all types
+        run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document")'
           
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
