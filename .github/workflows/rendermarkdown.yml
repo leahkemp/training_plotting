@@ -1,7 +1,9 @@
 # This is a basic workflow to help you get started with Actions
 
 name: Render R Markdown file as HTML
-
+permissions: 
+  contents: write
+  
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -35,14 +37,12 @@ jobs:
       - name: Render my document to all types
         run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document", output_file="build/index.html")'
         
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
+      
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: main # The branch the action should deploy to.
           folder: build
-          
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v3
-        with:
-          name: html output
-          path: training_data_analysis.html
