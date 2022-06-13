@@ -1,51 +1,54 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Render R Markdown file as HTML
+name: Render R Markdown file as HTML and trigger re-render of github pages
 permissions: 
   contents: write
   
-# Controls when the workflow will run
+# controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # triggers workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # also trigger the workflow to run every day
   schedule:
     - cron: '0 12 * * *'  # every day at midnight
 
-  # Allows you to run this workflow manually from the Actions tab
+  # allow running this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# start workflow
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
+    # the type of runner that the job will run on
     runs-on: ubuntu-latest
+    # utilise the rocker container (which contains R)
     container:
         image: rocker/verse
+    # get the google api key stored in the secrets section of the github repo
+    # this is used in the rmd file to read the data stored in google sheets
     env:
       SHEETS_API_JSON: ${{ secrets.SHEETS_API_JSON }}
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # steps represent a sequence of tasks that will be executed as part of the job
     steps:
         
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      
-      - name: Checkout
+      # check out repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout 
         uses: actions/checkout@v3
         
-      - name: Render my document to all types
+      # render html file from rmd
+      - name: Render RMD to html
         run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document", output_file="docs/index.html")'
-        
+      
+      # get rsync required for next step
       - name: Install rsync 📚
         run: |
           apt-get update && apt-get install -y rsync
       
-      - name: Deploy 🚀
+      # trigger re-render of gthub page made from output html file
+      - name: Re-render github page 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
-          branch: main # The branch the action should deploy to.
+          branch: main
           folder: docs
           target-folder: docs
