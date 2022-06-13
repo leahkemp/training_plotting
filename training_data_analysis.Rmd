@@ -49,7 +49,7 @@ training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONry
 
 json <- Sys.getenv("SHEETS_APIJSON")
 
-gs4_auth_configure(gs4_auth(email = "leahmhkemp@gmail.com", path=json)
+gs4_auth_configure(gs4_auth(email = "leahmhkemp@gmail.com", path=json))
 
 # read in data from google sheets
 # M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
