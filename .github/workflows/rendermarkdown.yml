@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Render my document to all types
-        run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document", output_file="build/index.html")'
+        run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document", output_file="docs/index.html")'
         
       - name: Install rsync 📚
         run: |
@@ -47,4 +47,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: main # The branch the action should deploy to.
-          folder: build
+          folder: docs
+          target-folder: docs
