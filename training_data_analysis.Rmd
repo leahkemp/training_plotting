@@ -47,6 +47,9 @@ library(plotly)
 training_plan_july_2021_july_2022 <- "https://docs.google.com/spreadsheets/d/1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0/edit#gid=35820724"
 training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
 
+gs4_auth_configure(api_key = Sys.getenv("SHEETS_API_TOKEN"))
+gs4_deauth()
+
 # read in data from google sheets
 # M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
 #                                    sheet = "M4_POLE_CONDITIONING")
