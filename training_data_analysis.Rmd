@@ -52,9 +52,14 @@ json <- Sys.getenv("SHEETS_API_JSON")
 gs4_auth_configure(gs4_auth(email = "leahmhkemp@gmail.com", path=json))
 
 # read in data from google sheets
+M5_GYM_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
+                               sheet = "M5_GYM_FULL_BODY")
+
+M5_DAILY_FLEX <- read_sheet(training_plan_july_2021_july_2022,
+                            sheet = "M5_DAILY_FLEX")
+
 # M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
 #                                    sheet = "M4_POLE_CONDITIONING")
-
 M4_DAILY_FLEX <- read_sheet(training_plan_july_2021_july_2022,
                             sheet = "M4_DAILY_FLEX")
 
@@ -92,7 +97,9 @@ targeting_the_tricks <- read_sheet(training_plan_feb_august_2021,
                                    sheet = "targeting_the_tricks")
 
 # create a list of the datasets I'm working with
-dataset_list <- list(M4_DAILY_FLEX,
+dataset_list <- list(M5_GYM_FULL_BODY,
+                     M5_DAILY_FLEX,
+                     M4_DAILY_FLEX,
                      M4_POLE_OPEN_TRAIN,
                      M4_GYM_FULL_BODY,
                      M3_DAILY_FLEX,
