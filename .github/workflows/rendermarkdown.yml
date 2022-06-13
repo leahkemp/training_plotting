@@ -38,7 +38,7 @@ jobs:
         
       # render html file from rmd
       - name: Render RMD to html
-        run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document", output_file="docs/index.html")'
+        run: Rscript -e 'rmarkdown::render("training_data_analysis.Rmd", output_format = "html_document", output_file="docs/training_data_analysis.html")'
       
       # get rsync required for next step
       - name: Install rsync 📚
