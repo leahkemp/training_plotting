@@ -22,7 +22,7 @@ jobs:
     container:
         image: rocker/verse
     env:
-      SHEETS_API_KEY: ${{ secrets.SHEETS_API_KEY }}
+      SHEETS_API_JSON: ${{ secrets.SHEETS_API_JSON }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
