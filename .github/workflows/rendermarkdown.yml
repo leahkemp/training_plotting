@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
         image: rocker/verse
+    env:
+      SHEETS_API_KEY: ${{ secrets.SHEETS_API_KEY }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
