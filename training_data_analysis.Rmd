@@ -1,7 +1,6 @@
 ---
 title: "Training data analysis"
 author: "Leah Kemp"
-date: "Date: `r base::format(Sys.time(), '%d/%m/%Y')`"
 always_allow_html: true
 output:
   html_document:
