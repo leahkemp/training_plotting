@@ -512,53 +512,6 @@ plotly::plot_ly(type = "scatter",
                  plot_bgcolor="#e5ecf6", width = 900)
 ```
 
-### Core strength
-
-```{r}
-# summarise data by broad requirement, exercise and date
-time_series_data <- data %>%
-  dplyr::group_by(requirement_broad, exercise, date) %>%
-  dplyr::summarise(number_of_sets_completed = n())
-```
-
-```{r, fig.height = 35, out.width = "100%"}
-time_series_data %>%
-  dplyr::filter(requirement_broad == "Core strength") %>%
-  time_series_plot()
-```
-
-### Lower body strength
-
-```{r, fig.height = 20, out.width = "100%"}
-time_series_data %>%
-  dplyr::filter(requirement_broad == "Lower body strength") %>%
-  time_series_plot()
-```
-
-### Upper body strength
-
-```{r, fig.height = 35, out.width = "100%"}
-time_series_data %>%
-  dplyr::filter(requirement_broad == "Upper body strength") %>%
-  time_series_plot()
-```
-
-### Splits flexibility
-
-```{r, fig.height = 40, out.width = "100%"}
-time_series_data %>%
-  dplyr::filter(requirement_broad == "Splits flexibility") %>%
-  time_series_plot()
-```
-
-### Back bending and rotation flexibility
-
-```{r, fig.height = 30, out.width = "100%"}
-time_series_data %>%
-  dplyr::filter(requirement_broad == "Back bending and rotation flexibility") %>%
-  time_series_plot()
-```
-
 ## Stretching
 
 ### Weekly total time stretching
