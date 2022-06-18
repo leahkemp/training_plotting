@@ -597,7 +597,7 @@ plotly::plot_ly(mode = "lines",
 **Target: 5-10 minutes per week per muscle**
 
 ```{r, out.width = "100%"}
-DAILY_FLEX <- dplyr::full_join(TP2_M3_DAILY_FLEX, TP1_M4_DAILY_FLEX,  by = c("requirement", "exercise"))
+DAILY_FLEX <- dplyr::full_join(TP2_M3_DAILY_FLEX, TP2_M4_DAILY_FLEX,  by = c("requirement", "exercise"))
 
 # remove microbend drills
 DAILY_FLEX <- DAILY_FLEX %>%
