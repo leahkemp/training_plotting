@@ -29,6 +29,7 @@ utils::install.packages("DT")
 utils::install.packages("scales")
 utils::install.packages("lubridate")
 utils::install.packages("plotly")
+utils::install.packages("gtools")
 ```
 
 ```{r}
@@ -40,6 +41,7 @@ base::library(DT)
 base::library(scales)
 base::library(lubridate)
 base::library(plotly)
+base::library(gtools)
 ```
 
 ```{r}
@@ -55,75 +57,44 @@ googlesheets4::gs4_auth_configure(googlesheets4::gs4_auth(email = "leahmhkemp@gm
 
 ```{r}
 # web links to excel spreadsheets in google docs
-training_plan_july_2021_july_2022 <- "https://docs.google.com/spreadsheets/d/1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0/edit#gid=35820724"
-training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
+TP2 <- "https://docs.google.com/spreadsheets/d/1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0/edit#gid=35820724"
+TP1 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
 
 # read in data from google sheets
-M5_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
-                                   sheet = "M5_POLE_CONDITIONING")
-
-M5_GYM_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                              sheet = "M5_GYM_FULL_BODY")
-
-M5_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                           sheet = "M5_DAILY_FLEX")
-
-M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
-                                   sheet = "M4_POLE_CONDITIONING")
-
-M4_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                           sheet = "M4_DAILY_FLEX")
-
-M4_POLE_OPEN_TRAIN <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                                sheet = "M4_POLE_OPEN_TRAIN")
-
-M4_GYM_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                              sheet = "M4_GYM_FULL_BODY")
-
-M3_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                           sheet = "M3_DAILY_FLEX")
-
-M3_POLE_UPPER_BODY_CORE <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                                     sheet = "M3_POLE_UPPER_BODY_CORE")
-
-M3_LOWER_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                           sheet = "M3_LOWER_BODY")
-
-M2_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                          sheet = "M2_FULL_BODY")
-
-M2_CORE_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                          sheet = "M2_CORE_FLEX")
-
-M1_POLE <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                     sheet = "M1_POLE")
-
-M1_GYM <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
-                                    sheet = "M1_GYM")
-
-targeting_the_requirements <- googlesheets4::read_sheet(training_plan_feb_august_2021,
-                                                        sheet = "targeting_the_requirements")
-
-targeting_the_tricks <- googlesheets4::read_sheet(training_plan_feb_august_2021,
-                                                  sheet = "targeting_the_tricks")
+TP2_M5_POLE_CONDITIONING <- read_sheet(TP2, sheet = "M5_POLE_CONDITIONING")
+TP2_M5_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M5_GYM_FULL_BODY")
+TP2_M5_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M5_DAILY_FLEX")
+TP2_M4_POLE_CONDITIONING <- read_sheet(TP2, sheet = "M4_POLE_CONDITIONING")
+TP2_M4_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M4_DAILY_FLEX")
+TP2_M4_POLE_OPEN_TRAIN <- googlesheets4::read_sheet(TP2, sheet = "M4_POLE_OPEN_TRAIN")
+TP2_M4_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M4_GYM_FULL_BODY")
+TP2_M3_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M3_DAILY_FLEX")
+TP2_M3_POLE_UPPER_BODY_CORE <- googlesheets4::read_sheet(TP2, sheet = "M3_POLE_UPPER_BODY_CORE")
+TP2_M3_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M3_GYM_FULL_BODY")
+TP2_M2_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M2_FULL_BODY")
+TP2_M2_CORE_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M2_CORE_FLEX")
+TP2_M1_POLE <- googlesheets4::read_sheet(TP2, sheet = "M1_POLE")
+TP2_M1_GYM <- googlesheets4::read_sheet(TP2, sheet = "M1_GYM")
+TP1_GYM_CORE_FLEX <- googlesheets4::read_sheet(TP1, sheet = "GYM_CORE_FLEX")
+TP1_POLE_CONDITIONING <- googlesheets4::read_sheet(TP1, sheet = "POLE_CONDITIONING")
 
 # create a list of the datasets I'm working with
-dataset_list <- base::list(M5_POLE_CONDITIONING,
-                           M5_GYM_FULL_BODY,
-                           M5_DAILY_FLEX,
-                           M4_POLE_CONDITIONING,
-                           M4_DAILY_FLEX,
-                           M4_POLE_OPEN_TRAIN,
-                           M4_GYM_FULL_BODY,
-                           M3_DAILY_FLEX,
-                           M3_POLE_UPPER_BODY_CORE,
-                           M3_LOWER_BODY,
-                           M2_FULL_BODY,
-                           M2_CORE_FLEX,
-                           M1_POLE,
-                           M1_GYM,
-                           targeting_the_tricks,
-                           targeting_the_requirements)
+dataset_list <- base::list(TP2_M5_POLE_CONDITIONING,
+                           TP2_M5_GYM_FULL_BODY,
+                           TP2_M5_DAILY_FLEX,
+                           TP2_M4_POLE_CONDITIONING,
+                           TP2_M4_DAILY_FLEX,
+                           TP2_M4_POLE_OPEN_TRAIN,
+                           TP2_M4_GYM_FULL_BODY,
+                           TP2_M3_DAILY_FLEX,
+                           TP2_M3_POLE_UPPER_BODY_CORE,
+                           TP2_M3_GYM_FULL_BODY,
+                           TP2_M2_FULL_BODY,
+                           TP2_M2_CORE_FLEX,
+                           TP2_M1_POLE,
+                           TP2_M1_GYM,
+                           TP1_POLE_CONDITIONING,
+                           TP1_GYM_CORE_FLEX)
 
 # setup my function to prepare the weights data
 prepare_weights_data <- function(df_list) {
@@ -446,7 +417,116 @@ data %>%
                                I("colvis"))))
 ```
 
-## Sets completed - time series {.tabset .tabset-fade}
+## Sessions completed
+
+```{r}
+# setup my function to prepare the sessions completed data
+prepare_session_data <- function(df_list) {
+    
+  data <- df_list %>%
+  # recode empty strings "" by NAs
+  dplyr::na_if("") %>%
+  
+  # remove empty rows
+  janitor::remove_empty(c("rows")) %>%  
+  
+  # remove some columns to only get the sets and reps
+  # this will also remove columns that don't have a date in the name (data hasn't been entered in those columns)
+  dplyr::select(session,
+                dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,4}")) %>%
+  # remove some columns to only get the session
+  select(!contains(c("notes", "weight"))) %>%
+  
+  # format all columns that have a date in their name, to integer format
+  dplyr::mutate_at(dplyr::vars(dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), base::as.integer) %>%
+  
+  # make this data long for downstream analyses
+  # this also extracts the date from the column names and makes a variable out of it
+  tidyr::pivot_longer(cols = -c(session),
+                      names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(reps_or_secs)$",
+                      names_to = c("date", "set", "reps_or_secs")) %>%
+  dplyr::mutate(date=base::ifelse(date=="", "value", date)) %>%
+  
+  # clean up columns
+  dplyr::select(c(session, date)) %>%
+  
+  # remove rows with NA values (exercise not done)
+  stats::na.omit() %>%
+  
+  # get unique sessions per date
+  base::unique()
+  
+  # format date column as a date
+  data$date <- base::as.Date(data$date,"%d/%m/%y", tz = "NZ")
+  
+  return(data)
+}
+
+# apply my function to prepare weights and reps/secs data
+session_data <- base::lapply(dataset_list, prepare_session_data)
+
+# collapse dataframes into one dataset
+session_data <- base::Reduce(base::rbind, session_data)
+
+# create a column that specifies the week and week
+session_data <- session_data %>%
+  dplyr::mutate(year_week = paste0(lubridate::year(lubridate::ymd(session_data$date)),
+                                   "_",
+                                   lubridate::week(lubridate::ymd(session_data$date))))
+
+# remove data previous than Dec 2021 since I was doing personal training sessions where the bulk of my training data wasn't recorded
+session_data <- session_data %>%
+  dplyr::filter(date > "2021-12-31")
+
+# summarise data by week and exercise
+session_data <- session_data %>%
+  dplyr::group_by(session, year_week) %>%
+  dplyr::summarise(number_of_sessions_completed = base::length(base::unique(date)))
+
+# naturally sort week/year column
+session_data$year_week <- gtools::mixedsort(session_data$year_week)
+```
+
+*Note. this plot doesn't includes only strength and flexibility conditioning sessions, it excludes pole skills sessions, pole classes and HITT training*
+
+```{r, out.width = "100%"}
+plot_ly(data = session_data,
+        x = ~year_week,
+        y = ~number_of_sessions_completed,
+        color = ~session,
+        type = "bar") %>%
+  plotly::layout(showlegend = TRUE,
+                 xaxis = base::list(rangeslider = base::list(visible = TRUE),
+                                    rangeselector = base::list(
+                                      buttons = base::list(
+                                        base::list(count=1, label="1m", step="month", stepmode="backward"),
+                                        base::list(count=3, label="3m", step="month", stepmode="backward"),
+                                        base::list(count=6, label="6m", step="month", stepmode="backward"),
+                                        base::list(count=1, label="YTD", step="year", stepmode="todate"),
+                                        base::list(count=1, label="1y", step="year", stepmode="backward"),
+                                        base::list(step="all"))))) %>%
+  plotly::layout(barmode = "stack",
+                 xaxis = base::list(title = "Year/week"),
+                 yaxis = base::list(title = "Number of sessions completed"))
+```
+
+```{r, out.width = "100%"}
+# create table of sessions data
+session_data %>%
+  dplyr::select(session,
+                year_week,
+                number_of_sessions_completed) %>%
+  base::unique() %>%
+  # make factors for table formatting
+  dplyr::mutate(session = base::as.factor(session)) %>%
+  DT::datatable(filter = "top",
+                colnames = c("Session",
+                             "Year/week",
+                             "Number of sessions completed"),
+                rownames = FALSE)
+```
+
+## Sets completed - time series
 
 ```{r}
 # summarise data by broad requirement and date
@@ -468,8 +548,6 @@ time_series_data <- time_series_data %>% base::split(time_series_data$requiremen
 # plot
 plotly::plot_ly(mode = "lines",
                 texttemplate="%{label}") %>%
-
-
   plotly::add_trace(data = time_series_data$`Upper body strength`,
                     x = ~date,
                     y = ~number_of_sets_completed,
@@ -509,8 +587,7 @@ plotly::plot_ly(mode = "lines",
                                         base::list(count=1, label="1y", step="year", stepmode="backward"),
                                         base::list(step="all"))))) %>%
   plotly::layout(xaxis = base::list(title = "Date"),
-                 yaxis = base::list(title = "Number of sets completed"),
-                 plot_bgcolor="#e5ecf6", width = 900)
+                 yaxis = base::list(title = "Number of sets completed"))
 ```
 
 ## Stretching
@@ -520,7 +597,7 @@ plotly::plot_ly(mode = "lines",
 **Target: 5-10 minutes per week per muscle**
 
 ```{r, out.width = "100%"}
-DAILY_FLEX <- dplyr::full_join(M3_DAILY_FLEX, M4_DAILY_FLEX,  by = c("requirement", "exercise"))
+DAILY_FLEX <- dplyr::full_join(TP2_M3_DAILY_FLEX, TP1_M4_DAILY_FLEX,  by = c("requirement", "exercise"))
 
 # remove microbend drills
 DAILY_FLEX <- DAILY_FLEX %>%
