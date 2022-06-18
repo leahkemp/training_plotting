@@ -448,8 +448,6 @@ data %>%
 
 ## Sets completed - time series {.tabset .tabset-fade}
 
-*Note. no lower body/upper body and core strength data available from personal training sessions between Dec 2020 to Dec 2021*
-
 ```{r}
 # summarise data by broad requirement and date
 time_series_data <- data %>%
@@ -468,33 +466,34 @@ time_series_data <- time_series_data %>%
 time_series_data <- time_series_data %>% base::split(time_series_data$requirement_broad)
 
 # plot
-plotly::plot_ly(type = "scatter",
-                mode = "markers + lines",
+plotly::plot_ly(mode = "lines",
                 texttemplate="%{label}") %>%
-  plotly::add_trace(data = time_series_data$`Upper body flexibility`,
-                    x = ~date,
-                    y = ~number_of_sets_completed,
-                    name = "Upper body flexibility") %>%
-  plotly::add_trace(data = time_series_data$`Core strength`,
-                    x = ~date,
-                    y = ~number_of_sets_completed,
-                    name = "Core strength") %>%
-  plotly::add_trace(data = time_series_data$`Lower body strength`,
-                    x = ~date,
-                    y = ~number_of_sets_completed,
-                    name = "Lower body strength") %>%
-  plotly::add_trace(data = time_series_data$`Lower body flexibility`,
-                    x = ~date,
-                    y = ~number_of_sets_completed,
-                    name = "Lower body flexibility") %>%
+
+
   plotly::add_trace(data = time_series_data$`Upper body strength`,
                     x = ~date,
                     y = ~number_of_sets_completed,
                     name = "Upper body strength") %>%
+  plotly::add_trace(data = time_series_data$`Lower body strength`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Lower body strength") %>%
+  plotly::add_trace(data = time_series_data$`Core strength`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Core strength") %>%
   plotly::add_trace(data = time_series_data$`Full body strength`,
                     x = ~date,
                     y = ~number_of_sets_completed,
                     name = "Full body strength") %>%
+  plotly::add_trace(data = time_series_data$`Lower body flexibility`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Lower body flexibility") %>%
+  plotly::add_trace(data = time_series_data$`Upper body flexibility`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Upper body flexibility") %>%
   plotly::add_trace(data = time_series_data$`Skills`,
                     x = ~date,
                     y = ~number_of_sets_completed,
@@ -509,15 +508,9 @@ plotly::plot_ly(type = "scatter",
                                         base::list(count=1, label="YTD", step="year", stepmode="todate"),
                                         base::list(count=1, label="1y", step="year", stepmode="backward"),
                                         base::list(step="all"))))) %>%
-  plotly::layout(xaxis = base::list(title = "Date",
-                                    zerolinecolor = "#ffff",
-                                    zerolinewidth = 2,
-                                    gridcolor = "ffff"),
-                 yaxis = base::list(title = "Number of sets completed",
-                                    zerolinecolor = "#ffff",
-                                    zerolinewidth = 2,
-                                    gridcolor = "ffff"),
-                 plot_bgcolor="#e5ecf6", width = 900)
+  plotly::layout(xaxis = base::list(title = "Date"),
+                 yaxis = base::list(title = "Number of sets completed"),
+                 plot_bgcolor="#e5ecf6"", width = 900")
 ```
 
 ## Stretching
