@@ -21,14 +21,12 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FA
 ```
 
 ```{r}
-# install packages
-utils::install.packages("googlesheets4")
-utils::install.packages("tidyverse")
-utils::install.packages("janitor")
-utils::install.packages("DT")
-utils::install.packages("scales")
-utils::install.packages("lubridate")
-utils::install.packages("plotly")
+# get renv to restore packages with renv
+utils::install.packages()
+base::library(renv)
+
+# install packages based on renv lock file
+renv::restore()
 ```
 
 ```{r}
@@ -42,9 +40,9 @@ base::library(lubridate)
 base::library(plotly)
 ```
 
-```{r, eval = TRUE}
+```{r}
 # TO UTILISE A GITHUB ACTION TO AUTOMATICALY RENDER THIS RMD TO HTML AND RENDER A GITHUB PAGES WEBPAGE
-# set "eval = TRUE" to "eval = FALSE" for this code chunk to render locally
+# this code chunk isn't required to render locally
 
 # get the api key for accessing google sheets stored in the secrets section of the github repo
 json <- base::Sys.getenv("SHEETS_API_JSON")
