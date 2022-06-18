@@ -372,19 +372,7 @@ pr %>%
                 colnames = c("Exercise",
                              "Reps/secs",
                              "Max weight"),
-                rownames = FALSE,
-                extensions = list("ColReorder" = NULL,
-                                  "Buttons" = NULL,
-                                  "FixedColumns" = list(leftColumns=1)),
-                options = list(
-                  dom = "BRrltpi",
-                  autoWidth = TRUE,
-                  buttons =
-                    base::list("copy",
-                               base::list(extend = "collection",
-                                          buttons = c("csv", "excel", "pdf"),
-                                          text = "Download"),
-                               I("colvis"))))
+                rownames = FALSE)
 ```
 
 ## Excercise list
@@ -402,19 +390,7 @@ data %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
                              "Requirement - broad"),
-                rownames = FALSE,
-                extensions = list("ColReorder" = NULL,
-                                  "Buttons" = NULL,
-                                  "FixedColumns" = list(leftColumns=1)),
-                options = list(
-                  dom = "BRrltpi",
-                  autoWidth = TRUE,
-                  buttons =
-                    base::list("copy",
-                               base::list(extend = "collection",
-                                          buttons = c("csv", "excel", "pdf"),
-                                          text = "Download"),
-                               I("colvis"))))
+                rownames = FALSE)
 ```
 
 ## Sessions completed
@@ -495,16 +471,6 @@ plot_ly(data = session_data,
         y = ~number_of_sessions_completed,
         color = ~session,
         type = "bar") %>%
-  plotly::layout(showlegend = TRUE,
-                 xaxis = base::list(rangeslider = base::list(visible = TRUE),
-                                    rangeselector = base::list(
-                                      buttons = base::list(
-                                        base::list(count=1, label="1m", step="month", stepmode="backward"),
-                                        base::list(count=3, label="3m", step="month", stepmode="backward"),
-                                        base::list(count=6, label="6m", step="month", stepmode="backward"),
-                                        base::list(count=1, label="YTD", step="year", stepmode="todate"),
-                                        base::list(count=1, label="1y", step="year", stepmode="backward"),
-                                        base::list(step="all"))))) %>%
   plotly::layout(barmode = "stack",
                  xaxis = base::list(title = "Year/week"),
                  yaxis = base::list(title = "Number of sessions completed"))
