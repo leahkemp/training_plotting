@@ -22,24 +22,24 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FA
 
 ```{r}
 # install packages
-install.packages("googlesheets4")
-install.packages("tidyverse")
-install.packages("janitor")
-install.packages("DT")
-install.packages("scales")
-install.packages("lubridate")
-install.packages("plotly")
+utils::install.packages("googlesheets4")
+utils::install.packages("tidyverse")
+utils::install.packages("janitor")
+utils::install.packages("DT")
+utils::install.packages("scales")
+utils::install.packages("lubridate")
+utils::install.packages("plotly")
 ```
 
 ```{r}
 # load packages
-library(googlesheets4)
-library(tidyverse)
-library(janitor)
-library(DT)
-library(scales)
-library(lubridate)
-library(plotly)
+base::library(googlesheets4)
+base::library(tidyverse)
+base::library(janitor)
+base::library(DT)
+base::library(scales)
+base::library(lubridate)
+base::library(plotly)
 ```
 
 ```{r, eval = TRUE}
@@ -59,72 +59,72 @@ training_plan_july_2021_july_2022 <- "https://docs.google.com/spreadsheets/d/1jS
 training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
 
 # read in data from google sheets
-M5_GYM_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
-                               sheet = "M5_GYM_FULL_BODY")
+M5_GYM_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                              sheet = "M5_GYM_FULL_BODY")
 
-M5_DAILY_FLEX <- read_sheet(training_plan_july_2021_july_2022,
-                            sheet = "M5_DAILY_FLEX")
+M5_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                           sheet = "M5_DAILY_FLEX")
 
 # M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
 #                                    sheet = "M4_POLE_CONDITIONING")
-M4_DAILY_FLEX <- read_sheet(training_plan_july_2021_july_2022,
-                            sheet = "M4_DAILY_FLEX")
+M4_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                           sheet = "M4_DAILY_FLEX")
 
-M4_POLE_OPEN_TRAIN <- read_sheet(training_plan_july_2021_july_2022,
-                                 sheet = "M4_POLE_OPEN_TRAIN")
+M4_POLE_OPEN_TRAIN <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                                sheet = "M4_POLE_OPEN_TRAIN")
 
-M4_GYM_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
-                               sheet = "M4_GYM_FULL_BODY")
+M4_GYM_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                              sheet = "M4_GYM_FULL_BODY")
 
-M3_DAILY_FLEX <- read_sheet(training_plan_july_2021_july_2022,
-                            sheet = "M3_DAILY_FLEX")
+M3_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                           sheet = "M3_DAILY_FLEX")
 
-M3_POLE_UPPER_BODY_CORE <- read_sheet(training_plan_july_2021_july_2022,
-                                sheet = "M3_POLE_UPPER_BODY_CORE")
+M3_POLE_UPPER_BODY_CORE <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                                     sheet = "M3_POLE_UPPER_BODY_CORE")
 
-M3_LOWER_BODY <- read_sheet(training_plan_july_2021_july_2022,
-                               sheet = "M3_LOWER_BODY")
+M3_LOWER_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                           sheet = "M3_LOWER_BODY")
 
-M2_FULL_BODY <- read_sheet(training_plan_july_2021_july_2022,
-                           sheet = "M2_FULL_BODY")
+M2_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                          sheet = "M2_FULL_BODY")
 
-M2_CORE_FLEX <- read_sheet(training_plan_july_2021_july_2022,
-                           sheet = "M2_CORE_FLEX")
+M2_CORE_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                          sheet = "M2_CORE_FLEX")
 
-M1_POLE <- read_sheet(training_plan_july_2021_july_2022,
-                      sheet = "M1_POLE")
+M1_POLE <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                     sheet = "M1_POLE")
 
-M1_GYM <- read_sheet(training_plan_july_2021_july_2022,
-                     sheet = "M1_GYM")
+M1_GYM <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
+                                    sheet = "M1_GYM")
 
-targeting_the_requirements <- read_sheet(training_plan_feb_august_2021,
-                                         sheet = "targeting_the_requirements")
+targeting_the_requirements <- googlesheets4::read_sheet(training_plan_feb_august_2021,
+                                                        sheet = "targeting_the_requirements")
 
-targeting_the_tricks <- read_sheet(training_plan_feb_august_2021,
-                                   sheet = "targeting_the_tricks")
+targeting_the_tricks <- googlesheets4::read_sheet(training_plan_feb_august_2021,
+                                                  sheet = "targeting_the_tricks")
 
 # create a list of the datasets I'm working with
-dataset_list <- list(M5_GYM_FULL_BODY,
-                     M5_DAILY_FLEX,
-                     M4_DAILY_FLEX,
-                     M4_POLE_OPEN_TRAIN,
-                     M4_GYM_FULL_BODY,
-                     M3_DAILY_FLEX,
-                     M3_POLE_UPPER_BODY_CORE,
-                     M3_LOWER_BODY,
-                     M2_FULL_BODY,
-                     M2_CORE_FLEX,
-                     M1_POLE,
-                     M1_GYM,
-                     targeting_the_tricks,
-                     targeting_the_requirements)
+dataset_list <- base::list(M5_GYM_FULL_BODY,
+                           M5_DAILY_FLEX,
+                           M4_DAILY_FLEX,
+                           M4_POLE_OPEN_TRAIN,
+                           M4_GYM_FULL_BODY,
+                           M3_DAILY_FLEX,
+                           M3_POLE_UPPER_BODY_CORE,
+                           M3_LOWER_BODY,
+                           M2_FULL_BODY,
+                           M2_CORE_FLEX,
+                           M1_POLE,
+                           M1_GYM,
+                           targeting_the_tricks,
+                           targeting_the_requirements)
 
 # setup my function to prepare the weights data
 prepare_weights_data <- function(df_list) {
   
   data <- df_list %>%
     # recode empty strings "" by NAs
-    na_if("") %>%
+    dplyr::na_if("") %>%
     
     # remove empty rows
     janitor::remove_empty(c("rows")) %>%  
@@ -134,27 +134,27 @@ prepare_weights_data <- function(df_list) {
     dplyr::select(requirement,
                   exercise,
                   matches("\\d{1,2}/\\d{1,2}/\\d{1,4}")) %>%
-    select(!contains(c("notes", "reps_or_secs"))) %>%
+    dplyr::select(!dplyr::contains(c("notes", "reps_or_secs"))) %>%
     
     # format all columns that have a date in their name, to integer format
-    mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), as.double) %>%
+    dplyr::mutate_at(dplyr::vars(dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), base::as.double) %>%
     
     # make this data long for downstream analyses
     # this also extracts the date from the column names and makes a variable out of it
-    pivot_longer(cols = -c(requirement, exercise),
-                 names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(weight)$",
-                 names_to = c("date", "set", "weight")) %>%
-    mutate(date=ifelse(date=="", "value", date)) %>%
+    tidyr::pivot_longer(cols = -c(requirement, exercise),
+                        names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(weight)$",
+                        names_to = c("date", "set", "weight")) %>%
+    dplyr::mutate(date=base::ifelse(date=="", "value", date)) %>%
     
     # clean up columns
-    select(-weight) %>%
-    rename(weight = value) %>%
+    dplyr::select(-weight) %>%
+    dplyr::rename(weight = value) %>%
     
     # remove rows with NA values (exercise not done)
-    na.omit()
+    stats::na.omit()
   
   # format date column as a date
-  data$date <- as.Date(data$date,"%d/%m/%y", tz = "NZ")
+  data$date <- base::as.Date(data$date,"%d/%m/%y", tz = "NZ")
   
   return(data)
   
@@ -165,7 +165,7 @@ prepare_reps_or_secs_data <- function(df_list) {
   
   data <- df_list %>%
     # recode empty strings "" by NAs
-    na_if("") %>%
+    dplyr::na_if("") %>%
     
     # remove empty rows
     janitor::remove_empty(c("rows")) %>%  
@@ -174,49 +174,49 @@ prepare_reps_or_secs_data <- function(df_list) {
     # this will also remove columns that don't have a date in the name (data hasn't been entered in those columns)
     dplyr::select(requirement,
                   exercise,
-                  matches("\\d{1,2}/\\d{1,2}/\\d{1,4}")) %>%
+                  dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,4}")) %>%
     # remove some columns to only get the sets and reps
     select(!contains(c("notes", "weight"))) %>%
     
     # format all columns that have a date in their name, to integer format
-    mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), as.integer) %>%
+    dplyr::mutate_at(dplyr::vars(dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,4}.set")), base::as.integer) %>%
     
     # make this data long for downstream analyses
     # this also extracts the date from the column names and makes a variable out of it
-    pivot_longer(cols = -c(requirement, exercise),
-                 names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(reps_or_secs)$",
-                 names_to = c("date", "set", "reps_or_secs")) %>%
-    mutate(date=ifelse(date=="", "value", date)) %>%
+    tidyr::pivot_longer(cols = -c(requirement, exercise),
+                        names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(reps_or_secs)$",
+                        names_to = c("date", "set", "reps_or_secs")) %>%
+    dplyr::mutate(date=base::ifelse(date=="", "value", date)) %>%
     
     # clean up columns
-    select(-reps_or_secs) %>%
-    rename(reps_or_secs = value) %>%
+    dplyr::select(-reps_or_secs) %>%
+    dplyr::rename(reps_or_secs = value) %>%
     
     # remove rows with NA values (exercise not done)
-    na.omit()
+    stats::na.omit()
   
   # format date column as a date
-  data$date <- as.Date(data$date,"%d/%m/%y", tz = "NZ")
+  data$date <- base::as.Date(data$date,"%d/%m/%y", tz = "NZ")
   
   return(data)
   
 }
 
 # apply my function to prepare weights and reps/secs data
-weights_data <- lapply(dataset_list, prepare_weights_data)
-reps_or_secs_data <- lapply(dataset_list, prepare_reps_or_secs_data)
+weights_data <- base::lapply(dataset_list, prepare_weights_data)
+reps_or_secs_data <- base::lapply(dataset_list, prepare_reps_or_secs_data)
 
 # collapse dataframes into one dataset
-weights_data <- Reduce(rbind, weights_data)
-reps_or_secs_data <- Reduce(rbind, reps_or_secs_data)
+weights_data <- base::Reduce(base::rbind, weights_data)
+reps_or_secs_data <- base::Reduce(base::rbind, reps_or_secs_data)
 
 # merge weights and reps/secs data
-data <- full_join(weights_data,
-                  reps_or_secs_data,
-                  by = c("requirement", "exercise", "date", "set"))
+data <- dplyr::full_join(weights_data,
+                         reps_or_secs_data,
+                         by = c("requirement", "exercise", "date", "set"))
 
 # replace missing values for weight (where I didn't enter a value since no weight was used) with 0
-data <- replace(data, is.na(data), 0)
+data <- base::replace(data, base::is.na(data), 0)
 
 # generalise the requirement list
 upper_body_strength <- c("Cup grip handspring deadlift",
@@ -277,78 +277,78 @@ skills <- c("Shoulder mount flag",
 
 # add this broader requirements as a new column in my data
 data <- data %>%
-  mutate(requirement_broad = case_when(requirement %in% upper_body_strength ~ "Upper body strength",
-                                       exercise == "Pole invert starting position isometric hold" ~ "Upper body strength",
-                                       exercise == "Pole invert finishing position isometric hold" ~ "Upper body strength",
-                                       requirement %in% lower_body_strength ~ "Lower body strength",
-                                       requirement %in% core_strength ~ "Core strength",
-                                       exercise == "Pole invert knee tucks" ~ "Core strength",
-                                       requirement %in% back_bending_rotation_flexibility  ~ "Back bending and rotation flexibility",
-                                       requirement %in% splits_flexibility ~ "Splits flexibility",
-                                       requirement %in% skills ~ "Skills"))
+  dplyr::mutate(requirement_broad = dplyr::case_when(requirement %in% upper_body_strength ~ "Upper body strength",
+                                                     exercise == "Pole invert starting position isometric hold" ~ "Upper body strength",
+                                                     exercise == "Pole invert finishing position isometric hold" ~ "Upper body strength",
+                                                     requirement %in% lower_body_strength ~ "Lower body strength",
+                                                     requirement %in% core_strength ~ "Core strength",
+                                                     exercise == "Pole invert knee tucks" ~ "Core strength",
+                                                     requirement %in% back_bending_rotation_flexibility  ~ "Back bending and rotation flexibility",
+                                                     requirement %in% splits_flexibility ~ "Splits flexibility",
+                                                     requirement %in% skills ~ "Skills"))
 
 # setup plotting functions
 time_series_plot <- function(data, wrap_variable) {
   data %>%
-    ggplot(aes(x = date, y = number_of_sets_completed)) +
-    geom_bar(stat="identity") +
-    theme(legend.position = "none") +
-    facet_wrap(vars(exercise), ncol = 1) +
-    geom_vline(xintercept = as.numeric("18/12/2021"), colour = "red") +
-    labs(title = "",
-         x = "Date",
-         y = "Number of sets") +
-    theme_bw() +
-    theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
-                                     hjust = 0.5, vjust = 0.5),
-          axis.text.y = element_text(colour = "grey20", size = 8),
-          legend.title = element_blank(),
-          text = element_text(size = 8)) +
+    ggplot2::ggplot(aes(x = date, y = number_of_sets_completed)) +
+    ggplot2::geom_bar(stat="identity") +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::facet_wrap(dplyr::vars(exercise), ncol = 1) +
+    ggplot2::geom_vline(xintercept = base::as.numeric("18/12/2021"), colour = "red") +
+    ggplot2::labs(title = "",
+                  x = "Date",
+                  y = "Number of sets") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(colour = "grey20", size = 8, angle = 90,
+                                                       hjust = 0.5, vjust = 0.5),
+                   axis.text.y = ggplot2::element_text(colour = "grey20", size = 8),
+                   legend.title = ggplot2::element_blank(),
+                   text = ggplot2::element_text(size = 8)) +
     # create a vertical line in plots at certain date where all my training data was collected (finished up with Jhene)
-    scale_x_date(labels = date_format("%Y-%m-%d"),
-                 breaks = "1 month", date_labels = paste0("%m", "/", "%Y"))
+    ggplot2::scale_x_date(labels = scales::date_format("%Y-%m-%d"),
+                          breaks = "1 month", date_labels = base::paste0("%m", "/", "%Y"))
 }
 
 time_series_summary_broad_plot <- function(data) {
   data %>%
-    ggplot(aes(x = date, y = number_of_sets_completed)) +
-    geom_bar(stat="identity") +
-    theme(legend.position = "none") +
-    facet_wrap(vars(requirement_broad), ncol = 1) +
-    geom_vline(xintercept = as.numeric("18/12/2021"), colour = "red") +
-    labs(title = "",
-         x = "Date",
-         y = "Number of sets") +
-    theme_bw() +
-    theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
-                                     hjust = 0.5, vjust = 0.5),
-          axis.text.y = element_text(colour = "grey20", size = 8),
-          legend.title = element_blank(),
-          text = element_text(size = 8)) +
+    ggplot2::ggplot(aes(x = date, y = number_of_sets_completed)) +
+    ggplot2::geom_bar(stat="identity") +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::facet_wrap(dplyr::vars(requirement_broad), ncol = 1) +
+    ggplot2::geom_vline(xintercept = base::as.numeric("18/12/2021"), colour = "red") +
+    ggplot2::labs(title = "",
+                  x = "Date",
+                  y = "Number of sets") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(colour = "grey20", size = 8, angle = 90,
+                                                       hjust = 0.5, vjust = 0.5),
+                   axis.text.y = ggplot2::element_text(colour = "grey20", size = 8),
+                   legend.title = ggplot2::element_blank(),
+                   text = ggplot2::element_text(size = 8)) +
     # create a vertical line in plots at certain date where all my training data was collected (finished up with Jhene)
-    scale_x_date(labels = date_format("%Y-%m-%d"),
-                 breaks = "1 month", date_labels = paste0("%m", "/", "%Y"))
+    ggplot2::scale_x_date(labels = scales::date_format("%Y-%m-%d"),
+                          breaks = "1 month", date_labels = base::paste0("%m", "/", "%Y"))
 }
 
 time_series_summary_plot <- function(data) {
   data %>%
-    ggplot(aes(x = date, y = number_of_sets_completed)) +
-    geom_bar(stat="identity") +
-    theme(legend.position = "none") +
-    facet_wrap(vars(requirement), ncol = 1) +
-    geom_vline(xintercept = as.numeric("18/12/2021"), colour = "red") +
-    labs(title = "",
-         x = "Date",
-         y = "Number of sets") +
-    theme_bw() +
-    theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
-                                     hjust = 0.5, vjust = 0.5),
-          axis.text.y = element_text(colour = "grey20", size = 8),
-          legend.title = element_blank(),
-          text = element_text(size = 8)) +
+    ggplot2::ggplot(aes(x = date, y = number_of_sets_completed)) +
+    ggplot2::geom_bar(stat="identity") +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::facet_wrap(dplyr::vars(requirement), ncol = 1) +
+    ggplot2::geom_vline(xintercept = base::as.numeric("18/12/2021"), colour = "red") +
+    ggplot2::labs(title = "",
+                  x = "Date",
+                  y = "Number of sets") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(colour = "grey20", size = 8, angle = 90,
+                                                       hjust = 0.5, vjust = 0.5),
+                   axis.text.y = ggplot2::element_text(colour = "grey20", size = 8),
+                   legend.title = ggplot2::element_blank(),
+                   text = ggplot2::element_text(size = 8)) +
     # create a vertical line in plots at certain date where all my training data was collected (finished up with Jhene)
-    scale_x_date(labels = date_format("%Y-%m-%d"),
-                 breaks = "1 month", date_labels = paste0("%m", "/", "%Y"))
+    ggplot2::scale_x_date(labels = scales::date_format("%Y-%m-%d"),
+                          breaks = "1 month", date_labels = base::paste0("%m", "/", "%Y"))
 }
 ```
 
@@ -357,18 +357,18 @@ time_series_summary_plot <- function(data) {
 ```{r, out.width = "100%"}
 # get the combinations of weights and reps/sec for each exercise
 weight_reps_pairs <- data %>%
-  select(-c(set, requirement, requirement_broad)) %>%
-  group_by(exercise,reps_or_secs, weight) %>%
-  summarise(reps_or_secs, weight)
+  dplyr::select(-c(set, requirement, requirement_broad)) %>%
+  dplyr::group_by(exercise,reps_or_secs, weight) %>%
+  dplyr::summarise(reps_or_secs, weight)
 
 # split dataset by exercise
-weight_reps_pairs_by_exercise <- split(weight_reps_pairs, weight_reps_pairs$exercise)
+weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pairs$exercise)
 
 get_pr <- function(data_list) {
   
   # order data by highest weight and highest number of reps/secs (priority to highest weight)
   ordered <- data_list %>%
-    arrange(desc(weight), desc(reps_or_secs))
+    dplyr::arrange(dplyr::desc(weight), dplyr::desc(reps_or_secs))
   
   # get the top row
   pr <- ordered[1, ]
@@ -378,10 +378,10 @@ get_pr <- function(data_list) {
 }
 
 # apply my function to my list of datasets (so the pr is calculated for each exercise)
-pr <- lapply(weight_reps_pairs_by_exercise, get_pr)
+pr <- base::lapply(weight_reps_pairs_by_exercise, get_pr)
 
 # collapse results into a single dataframe
-pr <- Reduce(rbind, pr)
+pr <- base::Reduce(rbind, pr)
 
 # put in table
 pr %>%
@@ -398,11 +398,11 @@ pr %>%
                   dom = "BRrltpi",
                   autoWidth = TRUE,
                   buttons =
-                    list("copy",
-                         list(extend = "collection",
-                              buttons = c("csv", "excel", "pdf"),
-                              text = "Download"),
-                         I("colvis"))))
+                    base::list("copy",
+                               base::list(extend = "collection",
+                                          buttons = c("csv", "excel", "pdf"),
+                                          text = "Download"),
+                               I("colvis"))))
 ```
 
 ## Excercise list
@@ -410,13 +410,13 @@ pr %>%
 ```{r, out.width = "100%"}
 # create table of list of exercises
 data %>%
-  select(exercise,
-         requirement_broad) %>%
-  unique() %>%
+  dplyr::select(exercise,
+                requirement_broad) %>%
+  base::unique() %>%
   # order alphabetically by requirement
-  arrange(exercise) %>%
+  dplyr::arrange(exercise) %>%
   # make factors for table formatting
-  mutate(requirement_broad = as.factor(requirement_broad)) %>%
+  dplyr::mutate(requirement_broad = base::as.factor(requirement_broad)) %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
                              "Requirement - broad"),
@@ -428,11 +428,11 @@ data %>%
                   dom = "BRrltpi",
                   autoWidth = TRUE,
                   buttons =
-                    list("copy",
-                         list(extend = "collection",
-                              buttons = c("csv", "excel", "pdf"),
-                              text = "Download"),
-                         I("colvis"))))
+                    base::list("copy",
+                               base::list(extend = "collection",
+                                          buttons = c("csv", "excel", "pdf"),
+                                          text = "Download"),
+                               I("colvis"))))
 ```
 
 ## Sets completed - time series {.tabset .tabset-fade}
@@ -442,59 +442,59 @@ data %>%
 ```{r}
 # summarise data by broad requirement and date
 time_series_data <- data %>%
-  group_by(requirement_broad, date) %>%
-  summarise(number_of_sets_completed = n())
+  dplyr::group_by(requirement_broad, date) %>%
+  dplyr::summarise(number_of_sets_completed = n())
 ```
 
 ### All categories
 
 ```{r, out.width = "100%"}
 # split data by broad requirement
-time_series_data <- time_series_data %>% split(time_series_data$requirement_broad)
+time_series_data <- time_series_data %>% base::split(time_series_data$requirement_broad)
 
 # plot
-plot_ly(type = "scatter",
-        mode = "markers + lines",
-        texttemplate="%{label}") %>%
-  add_trace(data = time_series_data$`Back bending and rotation flexibility`,
-            x = ~date,
-            y = ~number_of_sets_completed,
-            name = "Back bending and rotation flexibility") %>%
-  add_trace(data = time_series_data$`Core strength`,
-            x = ~date,
-            y = ~number_of_sets_completed,
-            name = "Core strength") %>%
-  add_trace(data = time_series_data$`Lower body strength`,
-            x = ~date,
-            y = ~number_of_sets_completed,
-            name = "Lower body strength") %>%
-  add_trace(data = time_series_data$`Splits flexibility`,
-            x = ~date,
-            y = ~number_of_sets_completed,
-            name = "Splits flexibility") %>%
-  add_trace(data = time_series_data$`Upper body strength`,
-            x = ~date,
-            y = ~number_of_sets_completed,
-            name = "Upper body strength") %>%
-  layout(showlegend = TRUE,
-         xaxis = list(rangeslider = list(visible = TRUE),
-                      rangeselector = list(
-                        buttons = list(
-                          list(count=1, label="1m", step="month", stepmode="backward"),
-                          list(count=3, label="3m", step="month", stepmode="backward"),
-                          list(count=6, label="6m", step="month", stepmode="backward"),
-                          list(count=1, label="YTD", step="year", stepmode="todate"),
-                          list(count=1, label="1y", step="year", stepmode="backward"),
-                          list(step="all"))))) %>%
-  layout(xaxis = list(title = "Date",
-                      zerolinecolor = "#ffff",
-                      zerolinewidth = 2,
-                      gridcolor = "ffff"),
-         yaxis = list(title = "Number of sets completed",
-                      zerolinecolor = "#ffff",
-                      zerolinewidth = 2,
-                      gridcolor = "ffff"),
-         plot_bgcolor="#e5ecf6", width = 900)
+plotly::plot_ly(type = "scatter",
+                mode = "markers + lines",
+                texttemplate="%{label}") %>%
+  plotly::add_trace(data = time_series_data$`Back bending and rotation flexibility`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Back bending and rotation flexibility") %>%
+  plotly::add_trace(data = time_series_data$`Core strength`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Core strength") %>%
+  plotly::add_trace(data = time_series_data$`Lower body strength`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Lower body strength") %>%
+  plotly::add_trace(data = time_series_data$`Splits flexibility`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Splits flexibility") %>%
+  plotly::add_trace(data = time_series_data$`Upper body strength`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Upper body strength") %>%
+  plotly::layout(showlegend = TRUE,
+                 xaxis = base::list(rangeslider = base::list(visible = TRUE),
+                                    rangeselector = base::list(
+                                      buttons = base::list(
+                                        base::list(count=1, label="1m", step="month", stepmode="backward"),
+                                        base::list(count=3, label="3m", step="month", stepmode="backward"),
+                                        base::list(count=6, label="6m", step="month", stepmode="backward"),
+                                        base::list(count=1, label="YTD", step="year", stepmode="todate"),
+                                        base::list(count=1, label="1y", step="year", stepmode="backward"),
+                                        base::list(step="all"))))) %>%
+  plotly::layout(xaxis = base::list(title = "Date",
+                                    zerolinecolor = "#ffff",
+                                    zerolinewidth = 2,
+                                    gridcolor = "ffff"),
+                 yaxis = base::list(title = "Number of sets completed",
+                                    zerolinecolor = "#ffff",
+                                    zerolinewidth = 2,
+                                    gridcolor = "ffff"),
+                 plot_bgcolor="#e5ecf6", width = 900)
 ```
 
 ### Core strength
@@ -502,13 +502,13 @@ plot_ly(type = "scatter",
 ```{r}
 # summarise data by broad requirement, exercise and date
 time_series_data <- data %>%
-  group_by(requirement_broad, exercise, date) %>%
-  summarise(number_of_sets_completed = n())
+  dplyr::group_by(requirement_broad, exercise, date) %>%
+  dplyr::summarise(number_of_sets_completed = n())
 ```
 
 ```{r, fig.height = 35, out.width = "100%"}
 time_series_data %>%
-  filter(requirement_broad == "Core strength") %>%
+  dplyr::filter(requirement_broad == "Core strength") %>%
   time_series_plot()
 ```
 
@@ -516,7 +516,7 @@ time_series_data %>%
 
 ```{r, fig.height = 20, out.width = "100%"}
 time_series_data %>%
-  filter(requirement_broad == "Lower body strength") %>%
+  dplyr::filter(requirement_broad == "Lower body strength") %>%
   time_series_plot()
 ```
 
@@ -524,7 +524,7 @@ time_series_data %>%
 
 ```{r, fig.height = 35, out.width = "100%"}
 time_series_data %>%
-  filter(requirement_broad == "Upper body strength") %>%
+  dplyr::filter(requirement_broad == "Upper body strength") %>%
   time_series_plot()
 ```
 
@@ -532,7 +532,7 @@ time_series_data %>%
 
 ```{r, fig.height = 40, out.width = "100%"}
 time_series_data %>%
-  filter(requirement_broad == "Splits flexibility") %>%
+  dplyr::filter(requirement_broad == "Splits flexibility") %>%
   time_series_plot()
 ```
 
@@ -540,76 +540,8 @@ time_series_data %>%
 
 ```{r, fig.height = 30, out.width = "100%"}
 time_series_data %>%
-  filter(requirement_broad == "Back bending and rotation flexibility") %>%
+  dplyr::filter(requirement_broad == "Back bending and rotation flexibility") %>%
   time_series_plot()
-```
-
-## Weight - time series
-
-```{r, eval = FALSE}
-# get all the exercises
-exercises <- unique(data$exercise)
-
-### COLOURING OF POINTS NOT WORKING ###
-
-# pair each exercise with a colour so they are consistent between all the plots
-colours_list <- data.frame(colour = paste0(rainbow(n = length(exercises))),
-                           exercise = exercises)
-
-colours_list$colour = paste0('"', colours_list$colour, '"')
-
-# join my column column back into data
-data <- left_join(data, colours_list, by = "exercise")
-
-# setup ui
-ui <- fluidPage(
-  
-  # generate box for user to select exercise
-  selectizeInput(
-    inputId = "exercises", 
-    label = NULL,
-    choices = c("Choose an exercise" = "", exercises), 
-    multiple = TRUE
-  ),
-  
-  # render plot
-  plotlyOutput(outputId = "scatterplot")
-)
-
-# setup server
-server <- function(input, output, session, ...) {
-  
-  # render scatterplot based on current user exercise choice
-  output$scatterplot <- renderPlotly({
-    
-    req(input$exercises)
-    
-    # get current screen width of
-    cur_height <- session$clientData$output_p_height
-    cur_width <- session$clientData$output_p_width
-    
-    # plot
-    scatterplot <- plot_ly(data = filter(data, exercise %in% input$exercises),
-                           x = ~date,
-                           y = ~weight,
-                           type = "scatter",
-                           mode = "markers",
-                           hoverinfo = "text",
-                           text = ~ base::paste("</br><i>", exercise, "</i>",
-                                                "</br><br> Weight:", weight,
-                                                "</br> Reps/secs:", reps_or_secs,
-                                                "</br> Date:", date),
-                           marker = base::list(colors = ~colour),
-                           size = ~reps_or_secs) %>%
-      plotly::layout(width = cur_width,
-                     height = cur_height,
-                     xaxis = base::list(title = "Date"),
-                     yaxis = base::list(title = "Weight (kg)"))
-    
-  })
-}
-
-shinyApp(ui, server)
 ```
 
 ## Stretching
@@ -619,19 +551,19 @@ shinyApp(ui, server)
 **Target: 5-10 minutes per week per muscle**
 
 ```{r, out.width = "100%"}
-DAILY_FLEX <- full_join(M3_DAILY_FLEX, M4_DAILY_FLEX,  by = c("requirement", "exercise"))
+DAILY_FLEX <- dplyr::full_join(M3_DAILY_FLEX, M4_DAILY_FLEX,  by = c("requirement", "exercise"))
 
 # remove microbend drills
 DAILY_FLEX <- DAILY_FLEX %>%
-  filter(requirement != "Microbend drills")
+  dplyr::filter(requirement != "Microbend drills")
 
 # recode empty strings "" by NAs
 DAILY_FLEX <- DAILY_FLEX %>%
-  na_if("") 
+  dplyr::na_if("") 
 
 # format all columns that have a date in their name, to integer format
 DAILY_FLEX <- DAILY_FLEX %>%
-  mutate_at(vars(matches("\\d{1,2}/\\d{1,2}/\\d{1,2}.set")), as.integer)
+  dplyr::mutate_at(dplyr::vars(dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,2}.set")), base::as.integer)
 
 # remove some columns to only get the sets and reps
 # this'll also remove columns that don't have a date in the name (data hasn't been entered in those columns)
@@ -642,23 +574,23 @@ DAILY_FLEX <- DAILY_FLEX %>%
 
 # make this data long for downstream analyses
 # this also extracts the date from the column names and makes a variable out of it
-DAILY_FLEX_long <- pivot_longer(DAILY_FLEX,
-                       cols = -c(requirement, exercise),
-                       names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,2}).(....).(reps_or_secs)$",
-                       names_to = c("date", "set", "reps_or_secs")) %>% 
-  mutate(date=ifelse(date=="", "value", date))
+DAILY_FLEX_long <- tidyr::pivot_longer(DAILY_FLEX,
+                                       cols = -c(requirement, exercise),
+                                       names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,2}).(....).(reps_or_secs)$",
+                                       names_to = c("date", "set", "reps_or_secs")) %>% 
+  dplyr::mutate(date=base::ifelse(date=="", "value", date))
 
 # clean up columns
 DAILY_FLEX_long <- DAILY_FLEX_long %>%
-  select(-reps_or_secs) %>%
-  rename(reps_or_secs = value)
+  dplyr::select(-reps_or_secs) %>%
+  dplyr::rename(reps_or_secs = value)
 
 # remove rows with NA values (exercise not done)
 DAILY_FLEX_long <- DAILY_FLEX_long %>%
-  na.omit()
+  stats::na.omit()
 
 # format date column as a date
-DAILY_FLEX_long$date <- as.Date(DAILY_FLEX_long$date,"%d/%m/%y")
+DAILY_FLEX_long$date <- base::as.Date(DAILY_FLEX_long$date,"%d/%m/%y")
 
 # create a column that specifies the week
 DAILY_FLEX_long <- DAILY_FLEX_long %>%
@@ -668,8 +600,8 @@ DAILY_FLEX_long <- DAILY_FLEX_long %>%
 ```{r}
 # summarise data by week and exercise
 time_series_data <- DAILY_FLEX_long %>%
-  group_by(requirement, exercise, week) %>%
-  summarise(number_of_reps_or_secs_completed = sum(reps_or_secs))
+  dplyr::group_by(requirement, exercise, week) %>%
+  dplyr::summarise(number_of_reps_or_secs_completed = sum(reps_or_secs))
 ```
 
 ```{r, out.width = "100%"}
@@ -685,22 +617,22 @@ integer_breaks <- function(n = 5, ...) {
 }
 
 time_series_data %>%
-  ggplot(aes(x = week, y = number_of_reps_or_secs_completed)) +
-  geom_bar(stat="identity") +
-  theme(legend.position = "none") +
-  facet_wrap(vars(requirement)) +
-  labs(title = "",
-       x = "Week",
-       y = "Total seconds") +
-  theme_bw() +
-  theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
-                                   hjust = 0.5, vjust = 0.5),
-        axis.text.y = element_text(colour = "grey20", size = 8),
-        legend.title = element_blank(),
-        text = element_text(size = 8)) +
-  geom_hline(yintercept = 300, colour = "orange") +
-  geom_hline(yintercept = 600, colour = "forest green") +
-  scale_x_continuous(breaks = integer_breaks())
+  ggplot2::ggplot(aes(x = week, y = number_of_reps_or_secs_completed)) +
+  ggplot2::geom_bar(stat="identity") +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_wrap(dplyr::vars(requirement)) +
+  ggplot2::labs(title = "",
+                x = "Week",
+                y = "Total seconds") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                            hjust = 0.5, vjust = 0.5),
+                 axis.text.y = element_text(colour = "grey20", size = 8),
+                 legend.title = element_blank(),
+                 text = element_text(size = 8)) +
+  ggplot2::geom_hline(yintercept = 300, colour = "orange") +
+  ggplot2::geom_hline(yintercept = 600, colour = "forest green") +
+  ggplot2::scale_x_continuous(breaks = integer_breaks())
 ```
 
 ### Stretching frequency
@@ -710,28 +642,28 @@ time_series_data %>%
 ```{r}
 # summarise data by week and exercise
 time_series_data <- DAILY_FLEX_long %>%
-  group_by(requirement, week) %>%
-  summarise(number_of_sessions_completed = length(unique(date)))
+  dplyr::group_by(requirement, week) %>%
+  dplyr::summarise(number_of_sessions_completed = base::length(base::unique(date)))
 ```
 
 ```{r, out.width = "100%"}
 time_series_data %>%
-  ggplot(aes(x = week, y = number_of_sessions_completed)) +
-  geom_bar(stat="identity") +
-  theme(legend.position = "none") +
-  facet_wrap(vars(requirement)) +
-  labs(title = "",
-       x = "Week",
-       y = "Total number of sessions") +
-  theme_bw() +
-  theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
-                                   hjust = 0.5, vjust = 0.5),
-        axis.text.y = element_text(colour = "grey20", size = 8),
-        legend.title = element_blank(),
-        text = element_text(size = 8)) +
-  geom_hline(yintercept = 5, colour = "orange") +
-  geom_hline(yintercept = 6, colour = "forest green") +
-  scale_x_continuous(breaks = integer_breaks())
+  ggplot2::ggplot(aes(x = week, y = number_of_sessions_completed)) +
+  ggplot2::geom_bar(stat="identity") +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::facet_wrap(dplyr::vars(requirement)) +
+  ggplot2::labs(title = "",
+                x = "Week",
+                y = "Total number of sessions") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 90,
+                                            hjust = 0.5, vjust = 0.5),
+                 axis.text.y = element_text(colour = "grey20", size = 8),
+                 legend.title = element_blank(),
+                 text = element_text(size = 8)) +
+  ggplot2::geom_hline(yintercept = 5, colour = "orange") +
+  ggplot2::geom_hline(yintercept = 6, colour = "forest green") +
+  ggplot2::scale_x_continuous(breaks = integer_breaks())
 ```
 
 ```{r, cleanup, results = "hide"}
