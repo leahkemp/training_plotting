@@ -510,7 +510,7 @@ plotly::plot_ly(mode = "lines",
                                         base::list(step="all"))))) %>%
   plotly::layout(xaxis = base::list(title = "Date"),
                  yaxis = base::list(title = "Number of sets completed"),
-                 plot_bgcolor="#e5ecf6"", width = 900")
+                 plot_bgcolor="#e5ecf6", width = 900)
 ```
 
 ## Stretching
