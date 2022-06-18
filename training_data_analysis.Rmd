@@ -43,17 +43,6 @@ base::library(plotly)
 ```
 
 ```{r}
-# load packages
-base::library(googlesheets4)
-base::library(tidyverse)
-base::library(janitor)
-base::library(DT)
-base::library(scales)
-base::library(lubridate)
-base::library(plotly)
-```
-
-```{r}
 # TO UTILISE A GITHUB ACTION TO AUTOMATICALY RENDER THIS RMD TO HTML AND RENDER A GITHUB PAGES WEBPAGE
 # this code chunk isn't required to render locally
 
@@ -70,14 +59,18 @@ training_plan_july_2021_july_2022 <- "https://docs.google.com/spreadsheets/d/1jS
 training_plan_feb_august_2021 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
 
 # read in data from google sheets
+M5_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
+                                   sheet = "M5_POLE_CONDITIONING")
+
 M5_GYM_FULL_BODY <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
                                               sheet = "M5_GYM_FULL_BODY")
 
 M5_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
                                            sheet = "M5_DAILY_FLEX")
 
-# M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
-#                                    sheet = "M4_POLE_CONDITIONING")
+M4_POLE_CONDITIONING <- read_sheet(training_plan_july_2021_july_2022,
+                                   sheet = "M4_POLE_CONDITIONING")
+
 M4_DAILY_FLEX <- googlesheets4::read_sheet(training_plan_july_2021_july_2022,
                                            sheet = "M4_DAILY_FLEX")
 
@@ -115,8 +108,10 @@ targeting_the_tricks <- googlesheets4::read_sheet(training_plan_feb_august_2021,
                                                   sheet = "targeting_the_tricks")
 
 # create a list of the datasets I'm working with
-dataset_list <- base::list(M5_GYM_FULL_BODY,
+dataset_list <- base::list(M5_POLE_CONDITIONING,
+                           M5_GYM_FULL_BODY,
                            M5_DAILY_FLEX,
+                           M4_POLE_CONDITIONING,
                            M4_DAILY_FLEX,
                            M4_POLE_OPEN_TRAIN,
                            M4_GYM_FULL_BODY,
@@ -250,32 +245,36 @@ core_strength <- c("Anti-extension core strength",
                    "Anti-lateral core strength",
                    "Anti-rotation core strength")
 
-back_bending_rotation_flexibility <- c("Back flexibility",
-                                       "Thoracic rotation",
-                                       "Thoracic lateral bend",
-                                       "Upper back/shoulder flexibility",
-                                       "Shoulder flexion flexibility and strength")
+full_body_strength <- c("Full body strength")
 
-splits_flexibility <- c("Active hamstring flexibility",
-                        "Active hamstring flexibility/hip flexion strength",
-                        "Active hip adduction and abduction",
-                        "Front splits",
-                        "Hamstring nerve tension",
-                        "Hip extension flexibility",
-                        "Internal and external hip rotation",
-                        "Middle split",
-                        "Pancake split",
-                        "Foot point",
-                        "Microbend drills",
-                        "Hip flexor flexibility",
-                        "Hamstring flexibility",
-                        "Hip flexion strength",
-                        "Glute and hamstring strength",
-                        "Hip abduction strength",
-                        "Hip adduction strength")
+upper_body_flexibility <- c("Back flexibility",
+                            "Thoracic rotation",
+                            "Thoracic lateral bend",
+                            "Upper back/shoulder flexibility",
+                            "Shoulder flexion flexibility and strength")
 
-skills <- c("Shoulder mount flag",
-            "Shoulder mount deadlift",
+lower_body_flexibility <- c("Active hamstring flexibility",
+                            "Active hamstring flexibility/hip flexion strength",
+                            "Active hip adduction and abduction",
+                            "Front splits",
+                            "Hamstring nerve tension",
+                            "Hip extension flexibility",
+                            "Internal and external hip rotation",
+                            "Middle split",
+                            "Pancake split",
+                            "Foot point",
+                            "Microbend drills",
+                            "Hip flexor flexibility",
+                            "Hamstring flexibility",
+                            "Hip flexion strength",
+                            "Glute and hamstring strength",
+                            "Hip abduction strength",
+                            "Hip adduction strength",
+                            "Hamstring flexibility")
+
+skills <- c("Shouldermount",
+            "Shouldermount flag",
+            "Shouldermount deadlift",
             "Shouldermount hops up pole",
             "Muscle up to pencil",
             "Human flag",
@@ -284,18 +283,19 @@ skills <- c("Shoulder mount flag",
             "Twisted grip aerial handspring",
             "Twisted grip iron X",
             "Bird of paradise",
-            "No leg climb")
+            "No leg climb",
+            "Twisted grip muscle up to pencil",
+            "Invert",
+            "Aerial invert")
 
 # add this broader requirements as a new column in my data
 data <- data %>%
   dplyr::mutate(requirement_broad = dplyr::case_when(requirement %in% upper_body_strength ~ "Upper body strength",
-                                                     exercise == "Pole invert starting position isometric hold" ~ "Upper body strength",
-                                                     exercise == "Pole invert finishing position isometric hold" ~ "Upper body strength",
                                                      requirement %in% lower_body_strength ~ "Lower body strength",
                                                      requirement %in% core_strength ~ "Core strength",
-                                                     exercise == "Pole invert knee tucks" ~ "Core strength",
-                                                     requirement %in% back_bending_rotation_flexibility  ~ "Back bending and rotation flexibility",
-                                                     requirement %in% splits_flexibility ~ "Splits flexibility",
+                                                     requirement %in% full_body_strength ~ "Full body strength",
+                                                     requirement %in% upper_body_flexibility  ~ "Upper body flexibility",
+                                                     requirement %in% lower_body_flexibility ~ "Lower body flexibility",
                                                      requirement %in% skills ~ "Skills"))
 
 # setup plotting functions
@@ -471,10 +471,10 @@ time_series_data <- time_series_data %>% base::split(time_series_data$requiremen
 plotly::plot_ly(type = "scatter",
                 mode = "markers + lines",
                 texttemplate="%{label}") %>%
-  plotly::add_trace(data = time_series_data$`Back bending and rotation flexibility`,
+  plotly::add_trace(data = time_series_data$`Upper body flexibility`,
                     x = ~date,
                     y = ~number_of_sets_completed,
-                    name = "Back bending and rotation flexibility") %>%
+                    name = "Upper body flexibility") %>%
   plotly::add_trace(data = time_series_data$`Core strength`,
                     x = ~date,
                     y = ~number_of_sets_completed,
@@ -483,14 +483,22 @@ plotly::plot_ly(type = "scatter",
                     x = ~date,
                     y = ~number_of_sets_completed,
                     name = "Lower body strength") %>%
-  plotly::add_trace(data = time_series_data$`Splits flexibility`,
+  plotly::add_trace(data = time_series_data$`Lower body flexibility`,
                     x = ~date,
                     y = ~number_of_sets_completed,
-                    name = "Splits flexibility") %>%
+                    name = "Lower body flexibility") %>%
   plotly::add_trace(data = time_series_data$`Upper body strength`,
                     x = ~date,
                     y = ~number_of_sets_completed,
                     name = "Upper body strength") %>%
+  plotly::add_trace(data = time_series_data$`Full body strength`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Full body strength") %>%
+  plotly::add_trace(data = time_series_data$`Skills`,
+                    x = ~date,
+                    y = ~number_of_sets_completed,
+                    name = "Skills") %>%
   plotly::layout(showlegend = TRUE,
                  xaxis = base::list(rangeslider = base::list(visible = TRUE),
                                     rangeselector = base::list(
