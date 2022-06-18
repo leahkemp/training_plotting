@@ -20,9 +20,9 @@ output:
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.align = "center")
 ```
 
-```{r}
+```{r, results = FALSE}
 # get renv to restore packages with renv
-utils::install.packages()
+utils::install.packages("renv")
 base::library(renv)
 
 # install packages based on renv lock file
