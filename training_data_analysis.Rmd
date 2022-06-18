@@ -375,24 +375,6 @@ pr %>%
                 rownames = FALSE)
 ```
 
-## Excercise list
-
-```{r, out.width = "100%"}
-# create table of list of exercises
-data %>%
-  dplyr::select(exercise,
-                requirement_broad) %>%
-  base::unique() %>%
-  # order alphabetically by requirement
-  dplyr::arrange(exercise) %>%
-  # make factors for table formatting
-  dplyr::mutate(requirement_broad = base::as.factor(requirement_broad)) %>%
-  DT::datatable(filter = "top",
-                colnames = c("Exercise",
-                             "Requirement - broad"),
-                rownames = FALSE)
-```
-
 ## Sessions completed
 
 ```{r}
@@ -660,6 +642,24 @@ time_series_data %>%
   ggplot2::geom_hline(yintercept = 5, colour = "orange") +
   ggplot2::geom_hline(yintercept = 6, colour = "forest green") +
   ggplot2::scale_x_continuous(breaks = integer_breaks())
+```
+
+## Excercise list
+
+```{r, out.width = "100%"}
+# create table of list of exercises
+data %>%
+  dplyr::select(exercise,
+                requirement_broad) %>%
+  base::unique() %>%
+  # order alphabetically by requirement
+  dplyr::arrange(exercise) %>%
+  # make factors for table formatting
+  dplyr::mutate(requirement_broad = base::as.factor(requirement_broad)) %>%
+  DT::datatable(filter = "top",
+                colnames = c("Exercise",
+                             "Requirement - broad"),
+                rownames = FALSE)
 ```
 
 ```{r, cleanup, results = "hide"}
