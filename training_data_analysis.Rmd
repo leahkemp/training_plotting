@@ -476,22 +476,6 @@ plot_ly(data = session_data,
                  yaxis = base::list(title = "Number of sessions completed"))
 ```
 
-```{r, out.width = "100%"}
-# create table of sessions data
-session_data %>%
-  dplyr::select(session,
-                year_week,
-                number_of_sessions_completed) %>%
-  base::unique() %>%
-  # make factors for table formatting
-  dplyr::mutate(session = base::as.factor(session)) %>%
-  DT::datatable(filter = "top",
-                colnames = c("Session",
-                             "Year/week",
-                             "Number of sessions completed"),
-                rownames = FALSE)
-```
-
 ## Sets completed - time series
 
 ```{r}
