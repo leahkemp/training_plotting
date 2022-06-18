@@ -21,12 +21,17 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FA
 ```
 
 ```{r, results = FALSE}
+utils::install.packages("markdown")
+base::library(markdown)
+```
+
+```{r, results = FALSE}
 # get renv to restore packages with renv
 utils::install.packages("renv")
 base::library(renv)
 
 # install packages based on renv lock file
-renv::restore()
+renv::restore(clean = TRUE)
 ```
 
 ```{r}
