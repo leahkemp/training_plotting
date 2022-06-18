@@ -455,6 +455,10 @@ data %>%
 time_series_data <- data %>%
   dplyr::group_by(requirement_broad, date) %>%
   dplyr::summarise(number_of_sets_completed = n())
+
+# remove data previous than Dec 2021 since I was doing personal training sessions where the bulk of my training data wasn't recorded
+time_series_data <- time_series_data %>%
+  dplyr::filter(date > "2021-12-31")
 ```
 
 ### All categories
