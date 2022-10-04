@@ -45,7 +45,7 @@ base::library(gtools)
 ```
 
 ```{r}
-# TO UTILISE A GITHUB ACTION TO AUTOMATICALY RENDER THIS RMD TO HTML AND RENDER A GITHUB PAGES WEBPAGE
+# to utilise a github action to automatically render this rmd to htmk and render a github pages webpage
 # this code chunk isn't required to render locally
 
 # get the api key for accessing google sheets stored in the secrets section of the github repo
