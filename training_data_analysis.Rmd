@@ -62,6 +62,7 @@ TP2 <- "https://docs.google.com/spreadsheets/d/1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBY
 TP3 <- "https://docs.google.com/spreadsheets/d/10_6J7E05NfRtssvikOKT3Fstxxl7lKAO1jbXFPL_DAw/edit#gid=1398744623"
 
 # read in data from google sheets
+TP3_M2_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M2_GYM_FULL_BODY")
 TP3_M1_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M1_GYM_FULL_BODY")
 #TP3_M2_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M2_POLE_CONDITIONING")
 
