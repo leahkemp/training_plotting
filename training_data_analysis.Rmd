@@ -84,7 +84,8 @@ TP1_GYM_CORE_FLEX <- googlesheets4::read_sheet(TP1, sheet = "GYM_CORE_FLEX")
 TP1_POLE_CONDITIONING <- googlesheets4::read_sheet(TP1, sheet = "POLE_CONDITIONING")
 
 # create a list of the datasets I'm working with
-dataset_list <- base::list(TP3_M1_GYM_FULL_BODY,
+dataset_list <- base::list(TP3_M2_GYM_FULL_BODY,,
+                           TP3_M1_GYM_FULL_BODY,
 #                           TP3_M2_POLE_CONDITIONING,
                            TP2_M5_POLE_CONDITIONING,
                            TP2_M5_GYM_FULL_BODY,
