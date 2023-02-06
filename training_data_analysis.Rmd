@@ -57,9 +57,9 @@ googlesheets4::gs4_auth_configure(googlesheets4::gs4_auth(email = "leahmhkemp@gm
 
 ```{r}
 # web links to excel spreadsheets in google docs
-TP1 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
+#TP1 <- "https://docs.google.com/spreadsheets/d/10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4/edit#gid=0"
 #TP2 <- "https://docs.google.com/spreadsheets/d/1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0/edit#gid=35820724"
-#TP3 <- "https://docs.google.com/spreadsheets/d/10_6J7E05NfRtssvikOKT3Fstxxl7lKAO1jbXFPL_DAw/edit#gid=1398744623"
+TP3 <- "https://docs.google.com/spreadsheets/d/10_6J7E05NfRtssvikOKT3Fstxxl7lKAO1jbXFPL_DAw/edit#gid=1398744623"
 
 # read in data from google sheets
 TP3_M2_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M2_GYM_FULL_BODY")
