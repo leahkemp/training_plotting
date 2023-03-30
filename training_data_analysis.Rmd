@@ -112,8 +112,6 @@ TP3_M2_POLE_CONDITIONING)
 prepare_weights_data <- function(df_list) {
   
   data <- df_list %>%
-    # recode empty strings "" by NAs
-    dplyr::na_if("") %>%
     
     # remove empty rows
     janitor::remove_empty(c("rows")) %>%  
@@ -153,8 +151,6 @@ prepare_weights_data <- function(df_list) {
 prepare_reps_or_secs_data <- function(df_list) {
   
   data <- df_list %>%
-    # recode empty strings "" by NAs
-    dplyr::na_if("") %>%
     
     # remove empty rows
     janitor::remove_empty(c("rows")) %>%  
