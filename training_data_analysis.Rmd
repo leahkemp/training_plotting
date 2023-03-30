@@ -390,8 +390,6 @@ pr %>%
 prepare_session_data <- function(df_list) {
     
   data <- df_list %>%
-  # recode empty strings "" by NAs
-  dplyr::na_if("") %>%
   
   # remove empty rows
   janitor::remove_empty(c("rows")) %>%  
