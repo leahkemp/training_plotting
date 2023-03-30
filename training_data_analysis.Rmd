@@ -538,10 +538,6 @@ DAILY_FLEX <- dplyr::full_join(TP2_M3_DAILY_FLEX, TP2_M4_DAILY_FLEX,  by = c("re
 DAILY_FLEX <- DAILY_FLEX %>%
   dplyr::filter(requirement != "Microbend drills")
 
-# recode empty strings "" by NAs
-DAILY_FLEX <- DAILY_FLEX %>%
-  dplyr::na_if("") 
-
 # format all columns that have a date in their name, to integer format
 DAILY_FLEX <- DAILY_FLEX %>%
   dplyr::mutate_at(dplyr::vars(dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,2}.set")), base::as.integer)
