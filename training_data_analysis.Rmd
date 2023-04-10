@@ -277,6 +277,7 @@ data <- data %>%
                                                      requirement %in% upper_body_flexibility  ~ "Upper body flexibility",
                                                      requirement %in% lower_body_flexibility ~ "Lower body flexibility",
                                                      requirement %in% skills ~ "Skills"))
+```
 
 ## PR
 
