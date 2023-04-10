@@ -323,9 +323,8 @@ pr <- pr %>%
 # put in table
 pr %>%
   dplyr::select(exercise, pr_pretty) %>%
-  DT::datatable(
-    filter = "top",
-    colnames = c("Exercise",
-                 "PR (reps/secs x weight)"),
-    rownames = FALSE)
+  DT::datatable(filter = "top",
+                colnames = c("Exercise",
+                             "PR (reps/secs x weight)"),
+                rownames = FALSE)
 ```
