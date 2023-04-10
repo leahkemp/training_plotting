@@ -277,6 +277,7 @@ data <- data %>%
                                                      requirement %in% upper_body_flexibility  ~ "Upper body flexibility",
                                                      requirement %in% lower_body_flexibility ~ "Lower body flexibility",
                                                      requirement %in% skills ~ "Skills"))
+
 ```
 
 ## PR
@@ -291,11 +292,15 @@ weight_reps_pairs <- data %>%
 # split dataset by exercise
 weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pairs$exercise)
 
+# setup function to grab pr
 get_pr <- function(data_list) {
   
   # order data by highest weight and highest number of reps/secs (priority to highest weight)
   ordered <- data_list %>%
     dplyr::arrange(dplyr::desc(weight), dplyr::desc(reps_or_secs))
+  
+  # get the unique values (remove repeated reps x weight combinations)
+  ordered <- unique(ordered)
   
   # get the top row
   pr <- ordered[1, ]
@@ -310,12 +315,17 @@ pr <- base::lapply(weight_reps_pairs_by_exercise, get_pr)
 # collapse results into a single dataframe
 pr <- base::Reduce(rbind, pr)
 
+# create a column with both reps and weight - pretty format for tables
+pr <- pr %>%
+  dplyr::mutate(pr_pretty = paste0(reps_or_secs, " x ", weight)) %>%
+  as.data.frame()
+
 # put in table
 pr %>%
-  dplyr::select(exercise, reps_or_secs, weight) %>%
-  DT::datatable(filter = "top",
-                colnames = c("Exercise",
-                             "Reps/secs",
-                             "Max weight"),
-                rownames = FALSE)
+  dplyr::select(exercise, pr_pretty) %>%
+  DT::datatable(
+    filter = "top",
+    colnames = c("Exercise",
+                 "PR (reps/secs x weight)"),
+    rownames = FALSE)
 ```
