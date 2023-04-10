@@ -320,11 +320,19 @@ pr <- pr %>%
   dplyr::mutate(pr_pretty = paste0(reps_or_secs, " x ", weight)) %>%
   as.data.frame()
 
+# get the first and the most recent date the pr was achieved
+tmp <- dplyr::right_join(data, pr)
+
+pr <- tmp %>% group_by(exercise, pr_pretty) %>%
+  summarise(first_date = min(date),
+            most_recent_date = max(date))
+
 # put in table
 pr %>%
-  dplyr::select(exercise, pr_pretty) %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
-                             "PR (reps/secs x weight)"),
+                             "PR (reps/secs x weight)",
+                             "First date",
+                             "Most recent date"),
                 rownames = FALSE)
 ```
