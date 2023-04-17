@@ -112,6 +112,7 @@ dataset_list <- base::list(TP1_POLE_CONDITIONING,
                            TP3_M3_POLE_CONDITIONING,
                            TP3_M4_GYM_FULL_BODY,
                            TP3_M4_POLE_CONDITIONING)
+                           
 
 # setup my function to prepare the weights data
 prepare_weights_data <- function(df_list) {
