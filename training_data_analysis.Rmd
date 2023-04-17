@@ -85,6 +85,8 @@ TP3_M1_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M1_GYM_FULL_BODY")
 TP3_M2_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M2_POLE_CONDITIONING")
 TP3_M3_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M3_GYM_FULL_BODY")
 TP3_M3_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M3_POLE_CONDITIONING")
+TP3_M4_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M4_GYM_FULL_BODY")
+TP3_M4_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M4_POLE_CONDITIONING")
 
 # create a list of the datasets I'm working with
 dataset_list <- base::list(TP1_POLE_CONDITIONING,
@@ -107,7 +109,9 @@ dataset_list <- base::list(TP1_POLE_CONDITIONING,
                            TP3_M1_GYM_FULL_BODY,
                            TP3_M2_POLE_CONDITIONING,
                            TP3_M3_GYM_FULL_BODY,
-                           TP3_M3_POLE_CONDITIONING)
+                           TP3_M3_POLE_CONDITIONING,
+                           TP3_M4_GYM_FULL_BODY,
+                           TP3_M4_POLE_CONDITIONING)
 
 # setup my function to prepare the weights data
 prepare_weights_data <- function(df_list) {
