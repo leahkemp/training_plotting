@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FA
 ```
 
 ```{r data_cleaning}
-# install packages 
+# install packages
 utils::install.packages("googlesheets4")
 utils::install.packages("tidyverse")
 utils::install.packages("janitor")
