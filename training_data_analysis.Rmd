@@ -341,7 +341,7 @@ pr %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
                              "PR (reps/secs x weight)",
-                             "First date",
-                             "Most recent date"),
+                             "First date achieved",
+                             "Most recent date achieved"),
                 rownames = FALSE)
 ```
