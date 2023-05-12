@@ -381,7 +381,7 @@ plotly::plot_ly(bench) %>%
 
 ### Deadlift
 
-```{r bench, out.width = "100%"}
+```{r deadlift, out.width = "100%"}
 plotly::plot_ly(deadlift) %>%
   add_trace(x = ~date,
             y = ~weight,
@@ -395,7 +395,7 @@ plotly::plot_ly(deadlift) %>%
 
 ### Squat
 
-```{r bench, out.width = "100%"}
+```{r squat, out.width = "100%"}
 plotly::plot_ly(squat) %>%
   add_trace(x = ~date,
             y = ~weight,
