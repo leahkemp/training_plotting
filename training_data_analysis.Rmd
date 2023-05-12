@@ -354,12 +354,12 @@ pr %>%
                 rownames = FALSE)
 ```
 
-## PR's last 30 days!
+## PR's last week!
 
 ```{r}
 cur_date <- Sys.Date()
 pr %>%
-  filter(between(first_date, cur_date-30, cur_date)) %>%
+  filter(between(first_date, cur_date-7, cur_date)) %>%
   dplyr::select(exercise, pr_pretty) %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
