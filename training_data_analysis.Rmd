@@ -308,7 +308,8 @@ weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pair
 PR's for all pole and gym exercises (exludes flexibility data)
 
 ```{r pr, out.width = "100%"}
-# setup function to grab pr
+# setup function to grab pr from a list of dataframes split by exercise
+
 get_pr <- function(data_list) {
   
   # order data by highest weight and highest number of reps/secs (priority to highest weight)
