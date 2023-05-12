@@ -114,7 +114,6 @@ dataset_list <- base::list(TP1_POLE_CONDITIONING,
                            TP3_M4_GYM_FULL_BODY,
                            TP3_M4_POLE_CONDITIONING)
                            
-
 # setup my function to prepare the weights data
 prepare_weights_data <- function(df_list) {
   
@@ -125,7 +124,8 @@ prepare_weights_data <- function(df_list) {
     
     # remove some columns to only get the weights data
     # this will also remove columns that don't have a date in the name (data hasn't been entered in those columns)
-    dplyr::select(requirement,
+    dplyr::select(session,
+                  requirement,
                   exercise,
                   matches("\\d{1,2}/\\d{1,2}/\\d{1,4}")) %>%
     dplyr::select(!dplyr::contains(c("notes", "reps_or_secs"))) %>%
@@ -135,7 +135,7 @@ prepare_weights_data <- function(df_list) {
     
     # make this data long for downstream analyses
     # this also extracts the date from the column names and makes a variable out of it
-    tidyr::pivot_longer(cols = -c(requirement, exercise),
+    tidyr::pivot_longer(cols = -c(session, requirement, exercise),
                         names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(weight)$",
                         names_to = c("date", "set", "weight")) %>%
     dplyr::mutate(date=base::ifelse(date=="", "value", date)) %>%
@@ -164,7 +164,8 @@ prepare_reps_or_secs_data <- function(df_list) {
     
     # remove some columns to only get the sets and reps
     # this will also remove columns that don't have a date in the name (data hasn't been entered in those columns)
-    dplyr::select(requirement,
+    dplyr::select(session,
+                  requirement,
                   exercise,
                   dplyr::matches("\\d{1,2}/\\d{1,2}/\\d{1,4}")) %>%
     # remove some columns to only get the sets and reps
@@ -175,7 +176,7 @@ prepare_reps_or_secs_data <- function(df_list) {
     
     # make this data long for downstream analyses
     # this also extracts the date from the column names and makes a variable out of it
-    tidyr::pivot_longer(cols = -c(requirement, exercise),
+    tidyr::pivot_longer(cols = -c(session, requirement, exercise),
                         names_pattern = "(\\d{1,2}/\\d{1,2}/\\d{1,4}).(....).(reps_or_secs)$",
                         names_to = c("date", "set", "reps_or_secs")) %>%
     dplyr::mutate(date=base::ifelse(date=="", "value", date)) %>%
@@ -205,7 +206,7 @@ reps_or_secs_data <- base::Reduce(base::rbind, reps_or_secs_data)
 # merge weights and reps/secs data
 data <- dplyr::full_join(weights_data,
                          reps_or_secs_data,
-                         by = c("requirement", "exercise", "date", "set"))
+                         by = c("session", "requirement", "exercise", "date", "set"))
 
 # replace missing values for weight (where I didn't enter a value since no weight was used) with 0
 data <- base::replace(data, base::is.na(data), 0)
