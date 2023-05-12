@@ -271,7 +271,10 @@ skills <- c("Shouldermount",
             "No leg climb",
             "Twisted grip muscle up to pencil",
             "Invert",
-            "Aerial invert")
+            "Aerial invert",
+            "Aerial twisted grip deadlift",
+            "Aerial true grip muscle up",
+            "Grip strength")
 
 # add this broader requirements as a new column in my data
 data <- data %>%
