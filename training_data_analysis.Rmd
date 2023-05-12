@@ -305,7 +305,7 @@ weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pair
 
 ## PR
 
-PR's for all pole and gym exercises (exludes flexibility data)
+PR's for all pole and gym exercises (excludes flexibility data)
 
 ```{r pr, out.width = "100%"}
 # setup function to grab pr from a list of dataframes split by exercise
