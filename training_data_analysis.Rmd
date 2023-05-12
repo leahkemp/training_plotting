@@ -384,6 +384,7 @@ squat <- data %>% dplyr::filter(exercise == "Barbell squat")
 plotly::plot_ly(bench) %>%
   add_trace(x = ~date,
             y = ~weight,
+            size = ~reps_or_secs,
             type = "scatter",
             mode = "markers",
             hoverinfo = "text",
@@ -398,6 +399,7 @@ plotly::plot_ly(bench) %>%
 plotly::plot_ly(deadlift) %>%
   add_trace(x = ~date,
             y = ~weight,
+            size = ~reps_or_secs,
             type = "scatter",
             mode = "markers",
             hoverinfo = "text",
@@ -412,6 +414,7 @@ plotly::plot_ly(deadlift) %>%
 plotly::plot_ly(squat) %>%
   add_trace(x = ~date,
             y = ~weight,
+            size = ~reps_or_secs,
             type = "scatter",
             mode = "markers",
             hoverinfo = "text",
