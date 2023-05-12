@@ -296,6 +296,8 @@ data_no_flex <- data %>%
 
 ## PR
 
+PR's for all pole and gym exercises (exludes flexibility data)
+
 ```{r, out.width = "100%"}
 # get the combinations of weights and reps/sec for each exercise
 weight_reps_pairs <- data_no_flex %>%
