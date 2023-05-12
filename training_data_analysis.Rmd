@@ -292,13 +292,7 @@ data <- data %>%
 # get a smaller set of the data that excludes flexibility training
 data_no_flex <- data %>%
   dplyr::filter(!requirement_broad %in% c("Lower body flexibility", "Upper body flexibility"))
-```
-
-## PR
-
-PR's for all pole and gym exercises (exludes flexibility data)
-
-```{r, out.width = "100%"}
+  
 # get the combinations of weights and reps/sec for each exercise
 weight_reps_pairs <- data_no_flex %>%
   dplyr::select(-c(set, requirement, requirement_broad)) %>%
@@ -307,7 +301,13 @@ weight_reps_pairs <- data_no_flex %>%
 
 # split dataset by exercise
 weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pairs$exercise)
+```
 
+## PR
+
+PR's for all pole and gym exercises (exludes flexibility data)
+
+```{r, out.width = "100%"}
 # setup function to grab pr
 get_pr <- function(data_list) {
   
