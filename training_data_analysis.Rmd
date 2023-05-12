@@ -354,6 +354,19 @@ pr %>%
                 rownames = FALSE)
 ```
 
+## PR's last 30 days!
+
+```{r}
+cur_date <- Sys.Date()
+pr %>%
+  filter(between(first_date, cur_date-30, cur_date)) %>%
+  dplyr::select(exercise, pr_pretty) %>%
+  DT::datatable(filter = "top",
+                colnames = c("Exercise",
+                             "PR (reps/secs x weight)"),
+                rownames = FALSE)
+```
+
 ## The big 3  {.tabset .tabset-fade}
 
 A closer look at the big 3 - bench, squat, deadlift
