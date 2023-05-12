@@ -45,8 +45,9 @@ base::library(gtools)
 ```
 
 ```{r}
-# to utilise a github action to automatically render this rmd to htmk and render a github pages webpage
-# this code chunk isn't required to render locally
+# utilise a github action to automatically render this rmd to html and render a github pages webpage
+# this code chunk isn't required to run this code locally
+# interactive access to the google sheets API can be triggered by running the first three lines of the next code chunk
 
 # get the api key for accessing google sheets stored in the secrets section of the github repo
 json <- base::Sys.getenv("SHEETS_API_JSON")
