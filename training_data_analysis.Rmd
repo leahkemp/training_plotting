@@ -353,3 +353,56 @@ pr %>%
                              "Most recent date achieved"),
                 rownames = FALSE)
 ```
+
+## The big 3  {.tabset .tabset-fade}
+
+A closer look at the big 3 - bench, squat, deadlift
+
+```{r big_3}
+# extract data for the big three - bench, squat, deadlift
+bench <- data %>% dplyr::filter(exercise == "Barbell chest press (flat)")
+deadlift <- data %>% dplyr::filter(exercise == "Barbell deadlift (conventional)")
+squat <- data %>% dplyr::filter(exercise == "Barbell squat")
+```
+
+### Bench
+
+```{r bench, out.width = "100%"}
+plotly::plot_ly(bench) %>%
+  add_trace(x = ~date,
+            y = ~weight,
+            type = "scatter",
+            mode = "markers",
+            hoverinfo = "text",
+            text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+  layout(yaxis = list(title = "Weight"),
+         xaxis = list(title = "Date"))
+```
+
+### Deadlift
+
+```{r bench, out.width = "100%"}
+plotly::plot_ly(deadlift) %>%
+  add_trace(x = ~date,
+            y = ~weight,
+            type = "scatter",
+            mode = "markers",
+            hoverinfo = "text",
+            text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+  layout(yaxis = list(title = "Weight"),
+         xaxis = list(title = "Date"))
+```
+
+### Squat
+
+```{r bench, out.width = "100%"}
+plotly::plot_ly(squat) %>%
+  add_trace(x = ~date,
+            y = ~weight,
+            type = "scatter",
+            mode = "markers",
+            hoverinfo = "text",
+            text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+  layout(yaxis = list(title = "Weight"),
+         xaxis = list(title = "Date"))
+```
