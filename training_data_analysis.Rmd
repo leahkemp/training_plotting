@@ -334,7 +334,7 @@ pr <- base::Reduce(rbind, pr)
 
 # create a column with both reps and weight - pretty format for tables
 pr <- pr %>%
-  dplyr::mutate(pr_pretty = paste0(reps_or_secs, " x ", weight)) %>%
+  dplyr::mutate(pr_pretty = paste0(reps_or_secs, " x ", weight, " kgs")) %>%
   as.data.frame()
 
 # get the first and the most recent date the pr was achieved
@@ -352,7 +352,6 @@ pr %>%
                              "First date",
                              "Most recent date"),
                 rownames = FALSE)
-```
 
 ## PR's last week!
 
