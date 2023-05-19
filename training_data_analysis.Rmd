@@ -353,7 +353,8 @@ pr %>%
                              "PR (reps/secs x weight)",
                              "First date",
                              "Most recent date"),
-                rownames = FALSE)
+                rownames = FALSE,
+                options = list(dom = 't'))
 ```
 
 ## PR's last week!
@@ -369,7 +370,8 @@ pr %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
                              "PR (reps/secs x weight)"),
-                rownames = FALSE)
+                rownames = FALSE,
+                options = list(dom = 't'))
 ```
 
 ## The big 3  {.tabset .tabset-fade}
