@@ -173,10 +173,10 @@ prepare_reps_or_secs_data <- function(df_list) {
 }
 
 # setup function to grab pr from a list of dataframes split by exercise
-get_pr <- function(data_list) {
+get_pr <- function(df_list) {
   
   # order data by highest weight and highest number of reps/secs (priority to highest weight)
-  ordered <- data_list %>%
+  ordered <- df_list %>%
     dplyr::arrange(dplyr::desc(weight), dplyr::desc(reps_or_secs))
   
   # get the unique values (remove repeated reps x weight combinations)
