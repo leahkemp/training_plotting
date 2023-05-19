@@ -367,7 +367,7 @@ pr %>%
 # get current date
 cur_date <- Sys.Date()
 
-# calulate recent PR's
+# calculate recent PR's
 pr %>%
   filter(between(first_date, cur_date-7, cur_date)) %>%
   dplyr::select(exercise, pr_pretty) %>%
