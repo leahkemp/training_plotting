@@ -405,7 +405,7 @@ plotly::plot_ly(bench) %>%
             mode = "markers",
             hoverinfo = "text",
             text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
-  layout(yaxis = list(title = "Weight (kg's"),
+  layout(yaxis = list(title = "Weight (kg's")),
          xaxis = list(title = "Date"))
 ```
 
@@ -421,7 +421,7 @@ plotly::plot_ly(deadlift) %>%
             mode = "markers",
             hoverinfo = "text",
             text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
-  layout(yaxis = list(title = "Weight (kg's"),
+  layout(yaxis = list(title = "Weight (kg's")),
          xaxis = list(title = "Date"))
 ```
 
@@ -437,6 +437,6 @@ plotly::plot_ly(squat) %>%
             mode = "markers",
             hoverinfo = "text",
             text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
-  layout(yaxis = list(title = "Weight (kg's"),
+  layout(yaxis = list(title = "Weight (kg's")),
          xaxis = list(title = "Date"))
 ```
