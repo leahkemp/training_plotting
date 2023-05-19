@@ -56,7 +56,7 @@ json <- base::Sys.getenv("SHEETS_API_JSON")
 googlesheets4::gs4_auth_configure(googlesheets4::gs4_auth(email = "leahmhkemp@gmail.com", path=json))
 ```
 
-```{r}
+```{r, read_data}
 # define ID's to google sheets
 TP1 <- "10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4"
 TP2 <- "1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0"
@@ -88,34 +88,10 @@ TP3_M3_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M3_GYM_FULL_BODY
 TP3_M3_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M3_POLE_CONDITIONING")
 TP3_M4_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M4_GYM_FULL_BODY")
 TP3_M4_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M4_POLE_CONDITIONING")
+```
 
-# create a list of the datasets I'm working with
-dataset_list <- base::list(TP1_POLE_CONDITIONING,
-                           TP1_GYM_CORE_FLEX,
-                           TP2_M5_POLE_CONDITIONING,
-                           TP2_M5_GYM_FULL_BODY,
-                           TP2_M5_DAILY_FLEX,
-                           TP2_M4_POLE_CONDITIONING,
-                           TP2_M4_DAILY_FLEX,
-                           TP2_M4_POLE_OPEN_TRAIN,
-                           TP2_M4_GYM_FULL_BODY,
-                           TP2_M3_DAILY_FLEX,
-                           TP2_M3_POLE_UPPER_BODY_CORE,
-                           TP2_M3_GYM_FULL_BODY,
-                           TP2_M2_FULL_BODY,
-                           TP2_M2_CORE_FLEX,
-                           TP2_M1_POLE,
-                           TP2_M1_GYM,
-                           TP3_M2_GYM_FULL_BODY,
-                           TP3_M1_GYM_FULL_BODY,
-                           TP3_M2_POLE_CONDITIONING,
-                           TP3_M3_GYM_FULL_BODY,
-                           TP3_M3_POLE_CONDITIONING,
-                           TP3_M4_GYM_FULL_BODY,
-                           TP3_M4_POLE_CONDITIONING)
-                           
-
-# setup my function to prepare the weights data
+```{r, define_functions}
+# setup function to prepare the weights data
 prepare_weights_data <- function(df_list) {
   
   data <- df_list %>%
@@ -155,7 +131,7 @@ prepare_weights_data <- function(df_list) {
   
 }
 
-# setup my function to prepare the reps/secs data
+# setup function to prepare the reps/secs data
 prepare_reps_or_secs_data <- function(df_list) {
   
   data <- df_list %>%
@@ -196,7 +172,51 @@ prepare_reps_or_secs_data <- function(df_list) {
   
 }
 
-# apply my function to prepare weights and reps/secs data
+# setup function to grab pr from a list of dataframes split by exercise
+get_pr <- function(data_list) {
+  
+  # order data by highest weight and highest number of reps/secs (priority to highest weight)
+  ordered <- data_list %>%
+    dplyr::arrange(dplyr::desc(weight), dplyr::desc(reps_or_secs))
+  
+  # get the unique values (remove repeated reps x weight combinations)
+  ordered <- unique(ordered)
+  
+  # get the top row
+  pr <- ordered[1, ]
+  
+  return(pr)
+  
+}
+```
+
+```{r, prepare_data}
+# create a list of the datasets I'm working with
+dataset_list <- base::list(TP1_POLE_CONDITIONING,
+                           TP1_GYM_CORE_FLEX,
+                           TP2_M5_POLE_CONDITIONING,
+                           TP2_M5_GYM_FULL_BODY,
+                           TP2_M5_DAILY_FLEX,
+                           TP2_M4_POLE_CONDITIONING,
+                           TP2_M4_DAILY_FLEX,
+                           TP2_M4_POLE_OPEN_TRAIN,
+                           TP2_M4_GYM_FULL_BODY,
+                           TP2_M3_DAILY_FLEX,
+                           TP2_M3_POLE_UPPER_BODY_CORE,
+                           TP2_M3_GYM_FULL_BODY,
+                           TP2_M2_FULL_BODY,
+                           TP2_M2_CORE_FLEX,
+                           TP2_M1_POLE,
+                           TP2_M1_GYM,
+                           TP3_M2_GYM_FULL_BODY,
+                           TP3_M1_GYM_FULL_BODY,
+                           TP3_M2_POLE_CONDITIONING,
+                           TP3_M3_GYM_FULL_BODY,
+                           TP3_M3_POLE_CONDITIONING,
+                           TP3_M4_GYM_FULL_BODY,
+                           TP3_M4_POLE_CONDITIONING)
+
+# prepare weights and reps/secs data
 weights_data <- base::lapply(dataset_list, prepare_weights_data)
 reps_or_secs_data <- base::lapply(dataset_list, prepare_reps_or_secs_data)
 
@@ -307,26 +327,8 @@ weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pair
 
 PR's for all pole and gym exercises (excludes flexibility data)
 
-```{r pr, out.width = "100%"}
-# setup function to grab pr from a list of dataframes split by exercise
-
-get_pr <- function(data_list) {
-  
-  # order data by highest weight and highest number of reps/secs (priority to highest weight)
-  ordered <- data_list %>%
-    dplyr::arrange(dplyr::desc(weight), dplyr::desc(reps_or_secs))
-  
-  # get the unique values (remove repeated reps x weight combinations)
-  ordered <- unique(ordered)
-  
-  # get the top row
-  pr <- ordered[1, ]
-  
-  return(pr)
-  
-}
-
-# apply my function to my list of datasets (so the pr is calculated for each exercise)
+```{r, pr, out.width = "100%"}
+# calculate PR for each exercise
 pr <- base::lapply(weight_reps_pairs_by_exercise, get_pr)
 
 # collapse results into a single dataframe
@@ -352,11 +354,15 @@ pr %>%
                              "First date",
                              "Most recent date"),
                 rownames = FALSE)
+```
 
 ## PR's last week!
 
-```{r}
+```{r, recent_pr, out.width = "100%"}
+# get current date
 cur_date <- Sys.Date()
+
+# calulate recent PR's
 pr %>%
   filter(between(first_date, cur_date-7, cur_date)) %>%
   dplyr::select(exercise, pr_pretty) %>%
@@ -370,7 +376,7 @@ pr %>%
 
 A closer look at the big 3 - bench, squat, deadlift
 
-```{r big_3}
+```{r, big_3}
 # extract data for the big three - bench, squat, deadlift
 bench <- data %>% dplyr::filter(exercise == "Barbell chest press (flat)")
 deadlift <- data %>% dplyr::filter(exercise == "Barbell deadlift (conventional)")
@@ -379,7 +385,8 @@ squat <- data %>% dplyr::filter(exercise == "Barbell squat")
 
 ### Bench
 
-```{r bench, out.width = "100%"}
+```{r, bench, out.width = "100%"}
+# generate table for bench
 plotly::plot_ly(bench) %>%
   add_trace(x = ~date,
             y = ~weight,
@@ -394,7 +401,8 @@ plotly::plot_ly(bench) %>%
 
 ### Deadlift
 
-```{r deadlift, out.width = "100%"}
+```{r, deadlift, out.width = "100%"}
+# generate table for deadlift
 plotly::plot_ly(deadlift) %>%
   add_trace(x = ~date,
             y = ~weight,
@@ -409,7 +417,8 @@ plotly::plot_ly(deadlift) %>%
 
 ### Squat
 
-```{r squat, out.width = "100%"}
+```{r, squat, out.width = "100%"}
+# generate table for squat
 plotly::plot_ly(squat) %>%
   add_trace(x = ~date,
             y = ~weight,
