@@ -62,11 +62,11 @@ TP1 <- "10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4"
 TP2 <- "1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0"
 TP3 <- "10_6J7E05NfRtssvikOKT3Fstxxl7lKAO1jbXFPL_DAw"
 
-# read in data from google sheets
+# read data from google sheets
 TP1_GYM_CORE_FLEX <- googlesheets4::read_sheet(TP1, sheet = "GYM_CORE_FLEX")
 TP1_POLE_CONDITIONING <- googlesheets4::read_sheet(TP1, sheet = "POLE_CONDITIONING")
 
-TP2_M5_POLE_CONDITIONING <- read_sheet(TP2, sheet = "M5_POLE_CONDITIONING")
+TP2_M5_POLE_CONDITIONING <- googlesheets4::read_sheet(TP2, sheet = "M5_POLE_CONDITIONING")
 TP2_M5_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M5_GYM_FULL_BODY")
 TP2_M5_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M5_DAILY_FLEX")
 TP2_M4_POLE_CONDITIONING <- read_sheet(TP2, sheet = "M4_POLE_CONDITIONING")
@@ -81,12 +81,12 @@ TP2_M2_CORE_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M2_CORE_FLEX")
 TP2_M1_POLE <- googlesheets4::read_sheet(TP2, sheet = "M1_POLE")
 TP2_M1_GYM <- googlesheets4::read_sheet(TP2, sheet = "M1_GYM")
 
-TP3_M2_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M2_GYM_FULL_BODY")
-TP3_M1_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M1_GYM_FULL_BODY")
+TP3_M2_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M2_GYM_FULL_BODY")
+TP3_M1_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M1_GYM_FULL_BODY")
 TP3_M2_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M2_POLE_CONDITIONING")
-TP3_M3_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M3_GYM_FULL_BODY")
+TP3_M3_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M3_GYM_FULL_BODY")
 TP3_M3_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M3_POLE_CONDITIONING")
-TP3_M4_GYM_FULL_BODY <- read_sheet(TP3, sheet = "M4_GYM_FULL_BODY")
+TP3_M4_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M4_GYM_FULL_BODY")
 TP3_M4_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M4_POLE_CONDITIONING")
 
 # create a list of the datasets I'm working with
