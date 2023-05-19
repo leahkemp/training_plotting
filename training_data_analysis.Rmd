@@ -382,7 +382,7 @@ pr %>%
                                paging = TRUE))
 ```
 
-## The big 3  {.tabset .tabset-fade}
+## The big 3 {.tabset .tabset-fade}
 
 A closer look at the big 3 - bench, squat, deadlift
 
