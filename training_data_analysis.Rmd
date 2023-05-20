@@ -187,6 +187,9 @@ get_pr <- function(df_list) {
 # read in configuration file
 config <- yaml::read_yaml("./config/config.yaml")
 
+# read in broad requirements configuration file
+broad_requirements <- yaml::read_yaml("./config/broad_requirements.yaml")
+
 # extract the "google_sheets" variable from the config file
 google_sheets <- config$google_sheets
 
@@ -239,82 +242,15 @@ data <- dplyr::full_join(weights_data,
 # replace missing values for weight (where I didn't enter a value since no weight was used) with 0
 data <- base::replace(data, base::is.na(data), 0)
 
-# setup lists to generalise the requirement list
-upper_body_strength <- c("Cup grip handspring deadlift",
-                         "Internal and external shoulder rotation",
-                         "No leg climb",
-                         "Pushing strength",
-                         "Shoulder flexion (with external rotation)",
-                         "Shoulder flexion (with neutral)",
-                         "Shoulder mount deadlift",
-                         "True grip ayesha",
-                         "Twisted grip handspring deadlift",
-                         "Upper body power",
-                         "Upper body strength",
-                         "Pulling strength")
-
-lower_body_strength <- c("Lower body power",
-                         "Lower body strength")
-
-core_strength <- c("Anti-extension core strength",
-                   "Anti-lateral core strength",
-                   "Anti-rotation core strength")
-
-full_body_strength <- c("Full body strength")
-
-upper_body_flexibility <- c("Back flexibility",
-                            "Thoracic rotation",
-                            "Thoracic lateral bend",
-                            "Upper back/shoulder flexibility",
-                            "Shoulder flexion flexibility and strength")
-
-lower_body_flexibility <- c("Active hamstring flexibility",
-                            "Active hamstring flexibility/hip flexion strength",
-                            "Active hip adduction and abduction",
-                            "Front splits",
-                            "Hamstring nerve tension",
-                            "Hip extension flexibility",
-                            "Internal and external hip rotation",
-                            "Middle split",
-                            "Pancake split",
-                            "Foot point",
-                            "Microbend drills",
-                            "Hip flexor flexibility",
-                            "Hamstring flexibility",
-                            "Hip flexion strength",
-                            "Glute and hamstring strength",
-                            "Hip abduction strength",
-                            "Hip adduction strength",
-                            "Hamstring flexibility")
-
-skills <- c("Shouldermount",
-            "Shouldermount flag",
-            "Shouldermount deadlift",
-            "Shouldermount hops up pole",
-            "Muscle up to pencil",
-            "Human flag",
-            "Spatchcock",
-            "Twisted grip handspring deadlift",
-            "Twisted grip aerial handspring",
-            "Twisted grip iron X",
-            "Bird of paradise",
-            "No leg climb",
-            "Twisted grip muscle up to pencil",
-            "Invert",
-            "Aerial invert",
-            "Aerial twisted grip deadlift",
-            "Aerial true grip muscle up",
-            "Grip strength")
-
-# add this broader requirements as a new column in my data
+# add broad requirements as a new column in my data
 data <- data %>%
-  dplyr::mutate(requirement_broad = dplyr::case_when(requirement %in% upper_body_strength ~ "Upper body strength",
-                                                     requirement %in% lower_body_strength ~ "Lower body strength",
-                                                     requirement %in% core_strength ~ "Core strength",
-                                                     requirement %in% full_body_strength ~ "Full body strength",
-                                                     requirement %in% upper_body_flexibility  ~ "Upper body flexibility",
-                                                     requirement %in% lower_body_flexibility ~ "Lower body flexibility",
-                                                     requirement %in% skills ~ "Skills"))
+  dplyr::mutate(requirement_broad = dplyr::case_when(requirement %in% broad_requirements$upper_body_strength ~ "Upper body strength",
+                                                     requirement %in% broad_requirements$lower_body_strength ~ "Lower body strength",
+                                                     requirement %in% broad_requirements$core_strength ~ "Core strength",
+                                                     requirement %in% broad_requirements$full_body_strength ~ "Full body strength",
+                                                     requirement %in% broad_requirements$upper_body_flexibility  ~ "Upper body flexibility",
+                                                     requirement %in% broad_requirements$lower_body_flexibility ~ "Lower body flexibility",
+                                                     requirement %in% broad_requirements$skills ~ "Skills"))
 
 # get a smaller set of the data that excludes flexibility training
 data_no_flex <- data %>%
