@@ -44,6 +44,11 @@ base::library(plotly)
 base::library(gtools)
 ```
 
+```{r}
+# record r/r package version info in logs
+sessionInfo()
+```
+
 ```{r, connect_sheets_api}
 # utilise a github action to automatically render this rmd to html and render a github pages webpage
 # this code chunk isn't required to run this code locally
