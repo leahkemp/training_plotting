@@ -193,7 +193,7 @@ google_sheets <- config$google_sheets
 # get the number of spreadsheets defined in the config file
 num_spreadsheets <- length(google_sheets)
 
-# create empy spreadsheet list
+# create empty spreadsheet list
 spreadsheet_list <- list()
 
 # dynamically create list of spreadsheets
