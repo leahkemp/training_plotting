@@ -316,8 +316,8 @@ data_no_flex <- data %>%
 # get the combinations of weights and reps/sec for each exercise
 weight_reps_pairs <- data_no_flex %>%
   dplyr::select(-c(set, requirement, requirement_broad)) %>%
-  dplyr::group_by(exercise,reps_or_secs, weight) %>%
-  dplyr::summarise(reps_or_secs, weight)
+  dplyr::group_by(exercise, reps_or_secs, weight) %>%
+  dplyr::reframe(reps_or_secs, weight)
 
 # split dataset by exercise
 weight_reps_pairs_by_exercise <- base::split(weight_reps_pairs, weight_reps_pairs$exercise)
@@ -337,14 +337,15 @@ pr <- base::Reduce(rbind, pr)
 # create a column with both reps and weight - pretty format for tables
 pr <- pr %>%
   dplyr::mutate(pr_pretty = paste0(reps_or_secs, " x ", weight, " kgs")) %>%
-  as.data.frame()
+  base::as.data.frame()
 
 # get the first and the most recent date the pr was achieved
-tmp <- dplyr::right_join(data, pr)
+tmp <- dplyr::right_join(data, pr, by = join_by(exercise, weight, reps_or_secs))
 
-pr <- tmp %>% group_by(exercise, pr_pretty) %>%
-  summarise(first_date = min(date),
-            most_recent_date = max(date))
+pr <- tmp %>%
+  dplyr::group_by(exercise, pr_pretty) %>%
+  dplyr::reframe(first_date = min(date),
+                 most_recent_date = max(date))
 
 # put in table
 pr %>%
@@ -365,11 +366,11 @@ pr %>%
 
 ```{r, recent_pr, out.width = "100%"}
 # get current date
-cur_date <- Sys.Date()
+cur_date <- base::Sys.Date()
 
 # calculate recent PR's
 pr %>%
-  filter(between(first_date, cur_date-7, cur_date)) %>%
+  dplyr::filter(between(first_date, cur_date-7, cur_date)) %>%
   dplyr::select(exercise, pr_pretty) %>%
   DT::datatable(filter = "top",
                 colnames = c("Exercise",
@@ -388,9 +389,14 @@ A closer look at the big 3 - bench, squat, deadlift
 
 ```{r, big_3}
 # extract data for the big three - bench, squat, deadlift
-bench <- data %>% dplyr::filter(exercise == "Barbell chest press (flat)")
-deadlift <- data %>% dplyr::filter(exercise == "Barbell deadlift (conventional)")
-squat <- data %>% dplyr::filter(exercise == "Barbell squat")
+bench <- data %>%
+  dplyr::filter(exercise == "Barbell chest press (flat)")
+
+deadlift <- data %>%
+  dplyr::filter(exercise == "Barbell deadlift (conventional)")
+
+squat <- data %>%
+  dplyr::filter(exercise == "Barbell squat")
 ```
 
 ### Bench
@@ -398,15 +404,15 @@ squat <- data %>% dplyr::filter(exercise == "Barbell squat")
 ```{r, bench, out.width = "100%"}
 # generate table for bench
 plotly::plot_ly(bench) %>%
-  add_trace(x = ~date,
-            y = ~weight,
-            size = ~reps_or_secs,
-            type = "scatter",
-            mode = "markers",
-            hoverinfo = "text",
-            text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
-  layout(yaxis = list(title = "Weight (kg's)"),
-         xaxis = list(title = "Date"))
+  plotly::add_trace(x = ~date,
+                    y = ~weight,
+                    size = ~reps_or_secs,
+                    type = "scatter",
+                    mode = "markers",
+                    hoverinfo = "text",
+                    text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+  plotly::layout(yaxis = list(title = "Weight (kg's)"),
+                 xaxis = list(title = "Date"))
 ```
 
 ### Deadlift
@@ -414,15 +420,15 @@ plotly::plot_ly(bench) %>%
 ```{r, deadlift, out.width = "100%"}
 # generate table for deadlift
 plotly::plot_ly(deadlift) %>%
-  add_trace(x = ~date,
-            y = ~weight,
-            size = ~reps_or_secs,
-            type = "scatter",
-            mode = "markers",
-            hoverinfo = "text",
-            text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
-  layout(yaxis = list(title = "Weight (kg's)"),
-         xaxis = list(title = "Date"))
+  plotly::add_trace(x = ~date,
+                    y = ~weight,
+                    size = ~reps_or_secs,
+                    type = "scatter",
+                    mode = "markers",
+                    hoverinfo = "text",
+                    text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+  plotly::layout(yaxis = list(title = "Weight (kg's)"),
+                 xaxis = list(title = "Date"))
 ```
 
 ### Squat
@@ -430,13 +436,13 @@ plotly::plot_ly(deadlift) %>%
 ```{r, squat, out.width = "100%"}
 # generate table for squat
 plotly::plot_ly(squat) %>%
-  add_trace(x = ~date,
-            y = ~weight,
-            size = ~reps_or_secs,
-            type = "scatter",
-            mode = "markers",
-            hoverinfo = "text",
-            text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
-  layout(yaxis = list(title = "Weight (kg's)"),
-         xaxis = list(title = "Date"))
+  plotly::add_trace(x = ~date,
+                    y = ~weight,
+                    size = ~reps_or_secs,
+                    type = "scatter",
+                    mode = "markers",
+                    hoverinfo = "text",
+                    text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+  plotly::layout(yaxis = list(title = "Weight (kg's)"),
+                 xaxis = list(title = "Date"))
 ```
