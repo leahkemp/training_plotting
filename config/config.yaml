@@ -1,0 +1,32 @@
+# list of google sheets to analyse
+# define sheet ID's of each google spreadsheet and each sheet you'd like to be read
+google_sheets:
+  - spreadsheet: "10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4"
+    sheet:
+      - "GYM_CORE_FLEX"
+      - "POLE_CONDITIONING"
+  - spreadsheet: "1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0"
+    sheet:
+      - "M1_POLE"
+      - "M1_GYM"
+      - "M2_FULL_BODY"
+      - "M2_CORE_FLEX"
+      - "M3_DAILY_FLEX"
+      - "M3_POLE_UPPER_BODY_CORE"
+      - "M3_GYM_FULL_BODY"
+      - "M4_POLE_CONDITIONING"
+      - "M4_DAILY_FLEX"
+      - "M4_POLE_OPEN_TRAIN"
+      - "M4_GYM_FULL_BODY"
+      - "M5_POLE_CONDITIONING"
+      - "M5_GYM_FULL_BODY"
+      - "M5_DAILY_FLEX"
+  - spreadsheet: "10_6J7E05NfRtssvikOKT3Fstxxl7lKAO1jbXFPL_DAw"
+    sheet:
+      - "M1_GYM_FULL_BODY"
+      - "M2_GYM_FULL_BODY"
+      - "M2_POLE_CONDITIONING"
+      - "M3_GYM_FULL_BODY"
+      - "M3_POLE_CONDITIONING"
+      - "M4_GYM_FULL_BODY"
+      - "M4_POLE_CONDITIONING"
