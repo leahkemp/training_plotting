@@ -1,0 +1,72 @@
+upper_body_strength:
+  - "Cup grip handspring deadlift"
+  - "Internal and external shoulder rotation"
+  - "No leg climb"
+  - "Pushing strength"
+  - "Shoulder flexion (with external rotation)"
+  - "Shoulder flexion (with neutral)"
+  - "Shoulder mount deadlift"
+  - "True grip ayesha"
+  - "Twisted grip handspring deadlift"
+  - "Upper body power"
+  - "Upper body strength"
+  - "Pulling strength"
+
+lower_body_strength:
+  - "Lower body power"
+  - "Lower body strength"
+
+core_strength:
+  - "Anti-extension core strength"
+  - "Anti-lateral core strength"
+  - "Anti-rotation core strength"
+
+full_body_strength:
+  - "Full body strength"
+
+upper_body_flexibility:
+  - "Back flexibility"
+  - "Thoracic rotation"
+  - "Thoracic lateral bend"
+  - "Upper back/shoulder flexibility"
+  - "Shoulder flexion flexibility and strength"
+
+lower_body_flexibility:
+  - "Active hamstring flexibility"
+  - "Active hamstring flexibility/hip flexion strength"
+  - "Active hip adduction and abduction"
+  - "Front splits"
+  - "Hamstring nerve tension"
+  - "Hip extension flexibility"
+  - "Internal and external hip rotation"
+  - "Middle split"
+  - "Pancake split"
+  - "Foot point"
+  - "Microbend drills"
+  - "Hip flexor flexibility"
+  - "Hamstring flexibility"
+  - "Hip flexion strength"
+  - "Glute and hamstring strength"
+  - "Hip abduction strength"
+  - "Hip adduction strength"
+  - "Hamstring flexibility"
+
+skills:
+  - "Shouldermount"
+  - "Shouldermount flag"
+  - "Shouldermount deadlift"
+  - "Shouldermount hops up pole"
+  - "Muscle up to pencil"
+  - "Human flag"
+  - "Spatchcock"
+  - "Twisted grip handspring deadlift"
+  - "Twisted grip aerial handspring"
+  - "Twisted grip iron X"
+  - "Bird of paradise"
+  - "No leg climb"
+  - "Twisted grip muscle up to pencil"
+  - "Invert"
+  - "Aerial invert"
+  - "Aerial twisted grip deadlift"
+  - "Aerial true grip muscle up"
+  - "Grip strength"
