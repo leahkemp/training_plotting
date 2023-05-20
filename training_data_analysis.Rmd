@@ -53,7 +53,7 @@ base::library(gtools)
 json <- base::Sys.getenv("SHEETS_API_JSON")
 
 # utilise the google sheets api key to autorise access to the google sheets
-googlesheets4::gs4_auth_configure(googlesheets4::gs4_auth(email = "leahmhkemp@gmail.com", path=json))
+googlesheets4::gs4_auth_configure(googlesheets4::gs4_auth(path=json))
 ```
 
 ```{r, read_data}
