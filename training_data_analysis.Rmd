@@ -359,7 +359,9 @@ pr %>%
                                bFilter = FALSE,
                                lengthMenu = list(c(10, 50, -1), 
                                                  c("10", "50", "All")),
-                               paging = TRUE))
+                               paging = TRUE)) %>% 
+  formatDate(columns = c(3, 4), 
+             method = "toLocaleDateString")
 ```
 
 ## PR's last week!
@@ -410,7 +412,7 @@ plotly::plot_ly(bench) %>%
                     type = "scatter",
                     mode = "markers",
                     hoverinfo = "text",
-                    text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+                    text = ~paste(format(date,"%d-%m-%Y"), "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
   plotly::layout(yaxis = list(title = "Weight (kg's)"),
                  xaxis = list(title = "Date"))
 ```
@@ -426,7 +428,7 @@ plotly::plot_ly(deadlift) %>%
                     type = "scatter",
                     mode = "markers",
                     hoverinfo = "text",
-                    text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+                    text = ~paste(format(date,"%d-%m-%Y"), "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
   plotly::layout(yaxis = list(title = "Weight (kg's)"),
                  xaxis = list(title = "Date"))
 ```
@@ -442,7 +444,7 @@ plotly::plot_ly(squat) %>%
                     type = "scatter",
                     mode = "markers",
                     hoverinfo = "text",
-                    text = ~paste(date, "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
+                    text = ~paste(format(date,"%d-%m-%Y"), "<br>", reps_or_secs, " x ", weight, "kgs")) %>%
   plotly::layout(yaxis = list(title = "Weight (kg's)"),
                  xaxis = list(title = "Date"))
 ```
