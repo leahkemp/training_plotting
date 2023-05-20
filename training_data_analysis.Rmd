@@ -30,6 +30,7 @@ utils::install.packages("scales")
 utils::install.packages("lubridate")
 utils::install.packages("plotly")
 utils::install.packages("gtools")
+utils::install.packages("yaml")
 ```
 
 ```{r, load_packages}
@@ -42,6 +43,7 @@ base::library(scales)
 base::library(lubridate)
 base::library(plotly)
 base::library(gtools)
+base::library(yaml)
 ```
 
 ```{r, connect_sheets_api}
@@ -56,41 +58,32 @@ json <- base::Sys.getenv("SHEETS_API_JSON")
 googlesheets4::gs4_auth_configure(googlesheets4::gs4_auth(path=json))
 ```
 
-```{r, read_data}
-# define ID's to google sheets
-TP1 <- "10gONryFN9afkoZvwuJ18rZ_kEO2p_R-H2O85Nr8ktv4"
-TP2 <- "1jSN7xN3CIQUQNUssWz2c9Wz-ab5qCaBYaYvdsNFKSY0"
-TP3 <- "10_6J7E05NfRtssvikOKT3Fstxxl7lKAO1jbXFPL_DAw"
-
-# read data from google sheets
-TP1_GYM_CORE_FLEX <- googlesheets4::read_sheet(TP1, sheet = "GYM_CORE_FLEX")
-TP1_POLE_CONDITIONING <- googlesheets4::read_sheet(TP1, sheet = "POLE_CONDITIONING")
-
-TP2_M5_POLE_CONDITIONING <- googlesheets4::read_sheet(TP2, sheet = "M5_POLE_CONDITIONING")
-TP2_M5_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M5_GYM_FULL_BODY")
-TP2_M5_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M5_DAILY_FLEX")
-TP2_M4_POLE_CONDITIONING <- read_sheet(TP2, sheet = "M4_POLE_CONDITIONING")
-TP2_M4_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M4_DAILY_FLEX")
-TP2_M4_POLE_OPEN_TRAIN <- googlesheets4::read_sheet(TP2, sheet = "M4_POLE_OPEN_TRAIN")
-TP2_M4_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M4_GYM_FULL_BODY")
-TP2_M3_DAILY_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M3_DAILY_FLEX")
-TP2_M3_POLE_UPPER_BODY_CORE <- googlesheets4::read_sheet(TP2, sheet = "M3_POLE_UPPER_BODY_CORE")
-TP2_M3_GYM_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M3_GYM_FULL_BODY")
-TP2_M2_FULL_BODY <- googlesheets4::read_sheet(TP2, sheet = "M2_FULL_BODY")
-TP2_M2_CORE_FLEX <- googlesheets4::read_sheet(TP2, sheet = "M2_CORE_FLEX")
-TP2_M1_POLE <- googlesheets4::read_sheet(TP2, sheet = "M1_POLE")
-TP2_M1_GYM <- googlesheets4::read_sheet(TP2, sheet = "M1_GYM")
-
-TP3_M2_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M2_GYM_FULL_BODY")
-TP3_M1_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M1_GYM_FULL_BODY")
-TP3_M2_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M2_POLE_CONDITIONING")
-TP3_M3_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M3_GYM_FULL_BODY")
-TP3_M3_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M3_POLE_CONDITIONING")
-TP3_M4_GYM_FULL_BODY <- googlesheets4::read_sheet(TP3, sheet = "M4_GYM_FULL_BODY")
-TP3_M4_POLE_CONDITIONING <- googlesheets4::read_sheet(TP3, sheet = "M4_POLE_CONDITIONING")
-```
-
 ```{r, define_functions}
+# setup function to read spreadsheets
+read_sheets_1 <- function(sheet_list) {
+  
+  read_data <- googlesheets4::read_sheet(spreadsheet_list[1], sheet_list)
+  
+  return(read_data)
+  
+}
+
+read_sheets_2 <- function(sheet_list) {
+  
+  read_data <- googlesheets4::read_sheet(spreadsheet_list[2], sheet_list)
+  
+  return(read_data)
+  
+}
+
+read_sheets_3 <- function(sheet_list) {
+  
+  read_data <- googlesheets4::read_sheet(spreadsheet_list[3], sheet_list)
+  
+  return(read_data)
+  
+}
+
 # setup function to prepare the weights data
 prepare_weights_data <- function(df_list) {
   
@@ -190,31 +183,45 @@ get_pr <- function(df_list) {
 }
 ```
 
+```{r, read_data}
+# read in configuration file
+config <- yaml::read_yaml("./config/config.yaml")
+
+# extract the "google_sheets" variable from the config file
+google_sheets <- config$google_sheets
+
+# get the number of spreadsheets defined in the config file
+num_spreadsheets <- length(google_sheets)
+
+# create empy spreadsheet list
+spreadsheet_list <- list()
+
+# dynamically create list of spreadsheets
+for (spreadsheet in 1:num_spreadsheets) {
+  
+  spreadsheet_list <- append(spreadsheet_list, google_sheets[[spreadsheet]]$spreadsheet)
+  
+}
+
+# collapse into a simple list
+spreadsheet_list <- unname(unlist(spreadsheet_list))
+
+# get sheet list for one spreadsheet for now
+sheet_list_1 <- google_sheets[[1]]$sheet
+sheet_list_2 <- google_sheets[[2]]$sheet
+sheet_list_3 <- google_sheets[[3]]$sheet
+
+# read spreadsheets
+read_data_1 <- base::lapply(sheet_list_1, read_sheets_1)
+read_data_2 <- base::lapply(sheet_list_2, read_sheets_2)
+read_data_3 <- base::lapply(sheet_list_3, read_sheets_3)
+
+## CURRENTLY WORKS FOR 3 SPREADSHEETS DEFINED IN CONFIG FILE - need to make it dynamically grab the spreadsheets
+```
+
 ```{r, prepare_data}
 # create a list of the datasets I'm working with
-dataset_list <- base::list(TP1_POLE_CONDITIONING,
-                           TP1_GYM_CORE_FLEX,
-                           TP2_M5_POLE_CONDITIONING,
-                           TP2_M5_GYM_FULL_BODY,
-                           TP2_M5_DAILY_FLEX,
-                           TP2_M4_POLE_CONDITIONING,
-                           TP2_M4_DAILY_FLEX,
-                           TP2_M4_POLE_OPEN_TRAIN,
-                           TP2_M4_GYM_FULL_BODY,
-                           TP2_M3_DAILY_FLEX,
-                           TP2_M3_POLE_UPPER_BODY_CORE,
-                           TP2_M3_GYM_FULL_BODY,
-                           TP2_M2_FULL_BODY,
-                           TP2_M2_CORE_FLEX,
-                           TP2_M1_POLE,
-                           TP2_M1_GYM,
-                           TP3_M2_GYM_FULL_BODY,
-                           TP3_M1_GYM_FULL_BODY,
-                           TP3_M2_POLE_CONDITIONING,
-                           TP3_M3_GYM_FULL_BODY,
-                           TP3_M3_POLE_CONDITIONING,
-                           TP3_M4_GYM_FULL_BODY,
-                           TP3_M4_POLE_CONDITIONING)
+dataset_list <- base::c(read_data_1, read_data_2, read_data_3)
 
 # prepare weights and reps/secs data
 weights_data <- base::lapply(dataset_list, prepare_weights_data)
