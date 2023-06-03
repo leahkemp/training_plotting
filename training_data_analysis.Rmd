@@ -21,39 +21,30 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FA
 ```
 
 ```{r, install_packages}
-# install packages
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/googlesheets4/googlesheets4_1.0.1.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_1.1.1.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/tidyr/tidyr_1.2.1.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/plotly/plotly_4.10.1.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/janitor/janitor_2.1.0.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/DT/DT_0.27.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/gtools/gtools_3.9.3.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
-utils::install.packages("https://cran.r-project.org/src/contrib/Archive/yaml/yaml_2.3.6.tar.gz",
-                        repos = NULL,
-                        type = "source",
-                        dependencies = TRUE)
+# create a list of packages to install
+package_list <- list("https://cran.r-project.org/src/contrib/Archive/crosstalk/crosstalk_1.1.1.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/snakecase/snakecase_0.10.0.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/googlesheets4/googlesheets4_1.0.1.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_1.1.1.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/tidyr/tidyr_1.2.1.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/plotly/plotly_4.10.1.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/janitor/janitor_2.1.0.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/DT/DT_0.27.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/gtools/gtools_3.9.3.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/yaml/yaml_2.3.6.tar.gz",
+                     "https://cran.r-project.org/src/contrib/Archive/crosstalk/crosstalk_1.1.1.tar.gz")
+
+# create function to install all packages in list
+install <- function(package_list) {
+  
+  utils::install.packages(package_list,
+                          repos = NULL,
+                          type = "source")
+  
+}
+
+# apply function to install all packages in list
+base::lapply(package_list, install)
 ```
 
 ```{r, load_packages}
