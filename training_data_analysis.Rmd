@@ -23,12 +23,11 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FA
 ```{r, install_packages}
 # install packages
 utils::install.packages("googlesheets4")
-utils::install.packages("tidyverse")
+utils::install.packages("dplyr")
+utils::install.packages("tidyr")
+utils::install.packages("plotly")
 utils::install.packages("janitor")
 utils::install.packages("DT")
-utils::install.packages("scales")
-utils::install.packages("lubridate")
-utils::install.packages("plotly")
 utils::install.packages("gtools")
 utils::install.packages("yaml")
 ```
@@ -36,12 +35,11 @@ utils::install.packages("yaml")
 ```{r, load_packages}
 # load packages
 base::library(googlesheets4)
-base::library(tidyverse)
+base::library(dplyr)
+base::library(tidyr)
+base::library(plotly)
 base::library(janitor)
 base::library(DT)
-base::library(scales)
-base::library(lubridate)
-base::library(plotly)
 base::library(gtools)
 base::library(yaml)
 ```
