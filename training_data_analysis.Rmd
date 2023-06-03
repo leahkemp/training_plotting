@@ -20,7 +20,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.align = "center")
 ```
 
-```{r, install_packages}
+```{r, install_packages, results = "hide"}
 # create a list of packages to install
 package_list <- list("https://cran.r-project.org/src/contrib/Archive/crosstalk/crosstalk_1.1.1.tar.gz",
                      "https://cran.r-project.org/src/contrib/Archive/snakecase/snakecase_0.10.0.tar.gz",
