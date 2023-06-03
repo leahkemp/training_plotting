@@ -299,7 +299,6 @@ pr %>%
                              "Most recent date"),
                 rownames = FALSE,
                 options = list(dom = "Blfrtip",
-                               bFilter = FALSE,
                                lengthMenu = list(c(10, 50, -1), 
                                                  c("10", "50", "All")),
                                paging = TRUE)) %>% 
@@ -322,7 +321,6 @@ pr %>%
                              "PR (reps/secs x weight)"),
                 rownames = FALSE,
                 options = list(dom = "Blfrtip",
-                               bFilter = FALSE,
                                lengthMenu = list(c(10, 50, -1), 
                                                  c("10", "50", "All")),
                                paging = TRUE))
