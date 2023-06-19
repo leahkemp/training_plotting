@@ -30,3 +30,5 @@ google_sheets:
       - "M3_POLE_CONDITIONING"
       - "M4_GYM_FULL_BODY"
       - "M4_POLE_CONDITIONING"
+      - "M5_GYM_FULL_BODY"
+      - "M5_POLE_CONDITIONING"
