@@ -97,6 +97,14 @@ read_sheets_3 <- function(sheet_list) {
   
 }
 
+read_sheets_4 <- function(sheet_list) {
+  
+  read_data <- googlesheets4::read_sheet(spreadsheet_list[4], sheet_list)
+  
+  return(read_data)
+  
+}
+
 # setup function to prepare the weights data
 prepare_weights_data <- function(df_list) {
   
@@ -226,18 +234,20 @@ spreadsheet_list <- unname(unlist(spreadsheet_list))
 sheet_list_1 <- google_sheets[[1]]$sheet
 sheet_list_2 <- google_sheets[[2]]$sheet
 sheet_list_3 <- google_sheets[[3]]$sheet
+sheet_list_4 <- google_sheets[[4]]$sheet
 
 # read spreadsheets
 read_data_1 <- base::lapply(sheet_list_1, read_sheets_1)
 read_data_2 <- base::lapply(sheet_list_2, read_sheets_2)
 read_data_3 <- base::lapply(sheet_list_3, read_sheets_3)
+read_data_4 <- base::lapply(sheet_list_4, read_sheets_4)
 
-## CURRENTLY WORKS FOR 3 SPREADSHEETS DEFINED IN CONFIG FILE - need to make it dynamically grab the spreadsheets
+## CURRENTLY WORKS FOR 4 SPREADSHEETS DEFINED IN CONFIG FILE - need to make it dynamically grab the spreadsheets
 ```
 
 ```{r, prepare_data}
 # create a list of the datasets I'm working with
-dataset_list <- base::c(read_data_1, read_data_2, read_data_3)
+dataset_list <- base::c(read_data_1, read_data_2, read_data_3, read_data_4)
 
 # prepare weights and reps/secs data
 weights_data <- base::lapply(dataset_list, prepare_weights_data)
