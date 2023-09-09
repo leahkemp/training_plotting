@@ -20,20 +20,31 @@ output:
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.align = "center")
 ```
 
-```{r, install_load_packages, results = "hide"}
+```{r, install_packages, results = "hide"}
 # create a list of packages to install
 package_list <- list("googlesheet4", "dplyr", "tidyr", "plotly", "janitor", "DT", "gtools", "yaml")
 
 # create function to install all packages in list
-install_and_load <- function(package_list) {
+install <- function(package_list) {
   
   utils::install.packages(package_list)
-  base::library(package_list)
-  
+
 }
 
 # apply function to install all packages in list
-base::lapply(package_list, install_and_load)
+base::lapply(package_list, install)
+```
+
+```{r, load_packages}
+# load packages
+base::library(googlesheets4)
+base::library(dplyr)
+base::library(tidyr)
+base::library(plotly)
+base::library(janitor)
+base::library(DT)
+base::library(gtools)
+base::library(yaml)
 ```
 
 ```{r, connect_sheets_api}
