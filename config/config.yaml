@@ -36,3 +36,5 @@ google_sheets:
     sheet:
       - "M1_GYM"
       - "M1_POLE"
+      - "M2_GYM"
+      - "M2_POLE"
