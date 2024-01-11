@@ -263,7 +263,7 @@ data <- data %>%
                                                      requirement %in% broad_requirements$lower_body_flexibility ~ "Lower body flexibility",
                                                      requirement %in% broad_requirements$skills ~ "Skills"))
 
-# get a smaller set of the data that excludes flexibility training
+# get a smaller set of data that excludes flexibility training
 data_no_flex <- data %>%
   dplyr::filter(!requirement_broad %in% c("Lower body flexibility", "Upper body flexibility"))
   
