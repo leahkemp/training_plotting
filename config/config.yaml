@@ -38,3 +38,5 @@ google_sheets:
       - "M1_POLE"
       - "M2_GYM"
       - "M2_POLE"
+      - "M3_GYM"
+      - "M3_POLE"
