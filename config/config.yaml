@@ -44,3 +44,7 @@ google_sheets:
       - "M4_POLE"
       - "M5_GYM"
       - "M5_POLE"
+  - spreadsheet: "1GYcBU0wYgJmnwfTbGQeI3RthtFAeVdU0JWL40kbfIuU"
+    sheet:
+      - "M1_POLE"
+      - "M1_GYM"
