@@ -48,3 +48,5 @@ google_sheets:
     sheet:
       - "M1_POLE"
       - "M1_GYM"
+      - "M2_POLE"
+      - "M2_GYM"
