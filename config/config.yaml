@@ -50,3 +50,7 @@ google_sheets:
       - "M1_GYM"
       - "M2_POLE"
       - "M2_GYM"
+      - "M3_POLE"
+      - "M3_GYM"
+      - "M4_POLE"
+      - "M4_GYM"
